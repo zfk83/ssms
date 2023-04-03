@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="./element-ui/index.css">
+</head>
+<body>
+    <div id="app" >
+        <img src="image/login.jpg" style="display: flex" width="100%" height="100%">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <div class="title">
+                <span>用户注册</span>
+            </div>
+            <el-form-item label="用户名:" prop="name">
+                <el-input v-model="ruleForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="密码:" prop="pass">
+                <el-input type="password" v-model="ruleForm.pass" show-password autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码:" prop="checkPass">
+                <el-input type="password" v-model="ruleForm.checkPass" show-password autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="性别:" prop="sex">
+                <el-radio-group v-model="ruleForm.sex">
+                    <el-radio label="男"></el-radio>
+                    <el-radio label="女"></el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item label="联系电话:" prop="phone">
+                <el-input v-model="ruleForm.phone"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="success" icon="el-icon-check" @click="onSubmit" @click="submitForm('ruleForm')">提交</el-button>
+                <el-button type="primary" icon="el-icon-refresh" @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+</body>
+
+<script src="./vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="./element-ui/index.js"></script>
+<script src="./axios/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el:'#app',
+        data() {
+            var validateName = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入用户名'));
+                } else {
+                    if (this.ruleForm.name !== '') {
+                        this.$refs.ruleForm.validateField('checkName');
+                    }
+                    callback();
+                }
+            };
+            var validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.ruleForm.checkPass !== '') {
+                        this.$refs.ruleForm.validateField('checkPass');
+                    }
+                    callback();
+                }
+            };
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.pass) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
+            var validatePhone = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入联系电话'));
+                } else {
+                    if (this.ruleForm.phone !== '') {
+                        this.$refs.ruleForm.validateField('checkPhone');
+                    }
+                    callback();
+                }
+            };
+            return {
+                ruleForm: {
+                    name: '',
+                    pass: '',
+                    checkPass: '',
+                    phone: '',
+                },
+                rules: {
+                    name: [
+                        { validator: validateName, trigger: 'blur' }
+                    ],
+                    pass: [
+                        { validator: validatePass, trigger: 'blur' }
+                    ],
+                    checkPass: [
+                        { validator: validatePass2, trigger: 'blur' }
+                    ],
+                    phone: [
+                        { validator: validatePhone, trigger: 'blur' }
+                    ],
+                }
+            };
+        },
+
+        methods:{
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
+        }
+    });
+</script>
+
+<style lang="less">
+    html,body{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #app{
+        height: 100%;
+        width: 100%;
+    }
+
+    .table{
+        margin-top: 10px;
+    }
+
+    .title {
+        font-size: 40px;
+        color: white;
+        margin-bottom: 50px;
+        margin-left: 80px;
+    }
+
+    .demo-ruleForm{
+        width: 500px;
+        text-align: center;
+        font-weight: bolder;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        margin-top: 20px;
+    }
+    .el-form-item__label{
+        color: white;
+    }
+    .el-radio__label{
+        color: white;
+    }
+
+</style>
+</html>

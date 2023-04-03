@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>供应商管理</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="./element-ui/index.css">
+</head>
+<body>
+    <div id="app">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="/">商品管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item>供应商管理</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="title">
+            <span>供应商详情</span>
+        </div>
+        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+            <el-form-item label="联系电话：">
+                <el-input v-model="formInline.region" placeholder="请输入联系电话"></el-input>
+            </el-form-item>
+            <el-form-item style="margin-left: 20px">
+                <el-button  type="success" icon="el-icon-search" @click="onSubmit">开始查找</el-button>
+                <el-button  type="primary" icon="el-icon-plus" @click="add">新增供应商</el-button>
+            </el-form-item>
+        </el-form>
+
+        <el-table :data="products" :border="true" class="table" >
+            <el-table-column prop="providerId" label="供应商编号"></el-table-column>
+            <el-table-column prop="providerName" label="供应商名称"></el-table-column>
+            <el-table-column prop="providerAddress" label="供应商地址"></el-table-column>
+            <el-table-column prop="contactPhone" label="联系电话"></el-table-column>
+            <el-table-column prop="operation" label="操作" width="450px">
+                <template slot-scope="scope">
+                    <el-button type="info" style="width: 120px" icon="el-icon-document" @click="handleClick(scope.row)">供货信息</el-button>
+                    <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="handleClick(scope.row)">修改</el-button>
+                    <el-button type="danger" style="width: 120px" icon="el-icon-delete" @click="handleClick(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-row>
+            <el-col :span="24" style="text-align: right;margin-top:50px;">
+                <el-pagination
+                        :page-size="5"
+                        :page-count="2"
+                        background
+                        layout="prev, pager, next"
+                        :total="7">
+                </el-pagination>
+            </el-col>
+        </el-row>
+    </div>
+
+</body>
+<script src="./vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="./element-ui/index.js"></script>
+<script src="./axios/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                input: "",
+                formInline: {
+                    user: '',
+                    region: ''
+                },
+                products: [
+                    {
+                        providerId: 1,
+                        providerName: '上海奉贤区供应商',
+                        providerAddress: '上海奉贤区',
+                        contactPhone: '12345678901',
+                    },
+                    {
+                        providerId: 2,
+                        providerName: '上海奉贤区供应商',
+                        providerAddress: '上海奉贤区',
+                        contactPhone: '12345678901',
+                    },
+                    {
+                        providerId: 3,
+                        providerName: '上海奉贤区供应商',
+                        providerAddress: '上海奉贤区',
+                        contactPhone: '12345678901',
+                    },
+                    {
+                        providerId: 4,
+                        providerName: '上海奉贤区供应商',
+                        providerAddress: '上海奉贤区',
+                        contactPhone: '12345678901',
+                    },
+                    {
+                        providerId: 5,
+                        providerName: '上海奉贤区供应商',
+                        providerAddress: '上海奉贤区',
+                        contactPhone: '12345678901',
+                    },
+                ]
+            }
+        },
+        methods:{
+            onClear() {
+                this.keyword = "";
+            },
+            plus(){
+
+            },
+            add(){
+                window.location.href = "addProvider.html";
+            },
+            onSubmit(){
+                console.log(this.formInline.region);
+            },
+
+        }
+    });
+</script>
+<style lang="less">
+    html,body{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #app{
+        height: 100%;
+        width: 100%;
+    }
+
+    .table{
+        margin-top: 20px;
+    }
+
+    .title{
+        font-size: 25px;
+        margin-top: 50px;
+    }
+
+    .demo-form-inline{
+        margin-top: 20px;
+    }
+
+</style>
+</html>

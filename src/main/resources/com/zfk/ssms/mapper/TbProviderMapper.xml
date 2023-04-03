@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zfk.ssms.mapper.TbProviderMapper">
+
+    <resultMap id="BaseResultMap" type="com.zfk.ssms.domain.TbProvider">
+            <id property="providerId" column="provider_id" jdbcType="BIGINT"/>
+            <result property="providerName" column="provider_name" jdbcType="VARCHAR"/>
+            <result property="providerAddress" column="provider_address" jdbcType="VARCHAR"/>
+            <result property="contactPhone" column="contact_phone" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        provider_id,provider_name,provider_address,
+        contact_phone
+    </sql>
+</mapper>

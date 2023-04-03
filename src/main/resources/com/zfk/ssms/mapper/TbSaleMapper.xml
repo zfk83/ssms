@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zfk.ssms.mapper.TbSaleMapper">
+
+    <resultMap id="BaseResultMap" type="com.zfk.ssms.domain.TbSale">
+            <id property="saleId" column="sale_id" jdbcType="BIGINT"/>
+            <result property="saleDate" column="sale_date" jdbcType="TIMESTAMP"/>
+            <result property="profit" column="profit" jdbcType="DECIMAL"/>
+            <result property="productId" column="product_id" jdbcType="BIGINT"/>
+            <result property="saleCount" column="sale_count" jdbcType="INTEGER"/>
+            <result property="salePrice" column="sale_price" jdbcType="DECIMAL"/>
+            <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        sale_id,sale_date,profit,
+        product_id,sale_count,sale_price,
+        product_name
+    </sql>
+</mapper>

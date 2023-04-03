@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发货管理</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="./element-ui/index.css">
+</head>
+<body>
+<div id="app">
+    <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+        <el-breadcrumb-item><a href="/">订单管理</a></el-breadcrumb-item>
+        <el-breadcrumb-item>发货管理</el-breadcrumb-item>
+    </el-breadcrumb>
+    <div class="title">
+        <span>发货管理</span>
+    </div>
+
+    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form-item label="订单编号：">
+            <el-input v-model="formInline.region" placeholder="请输入订单编号"></el-input>
+        </el-form-item>
+        <el-form-item label="用户编号：">
+            <el-input v-model="formInline.region" placeholder="请输入用户编号"></el-input>
+        </el-form-item>
+        <el-form-item class="block">
+            <span class="demonstration">时间：</span>
+            <el-date-picker
+                    v-model="value2"
+                    type="datetimerange"
+                    :picker-options="pickerOptions"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    align="right">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+            <el-button  type="success" icon="el-icon-search" @click="onSubmit">搜索</el-button>
+            <el-button  type="primary" icon="el-icon-refresh" @click="add">重置</el-button>
+        </el-form-item>
+    </el-form>
+
+    <el-table :data="products" :border="true" class="table">
+        <el-table-column prop="orderId" label="订单编号"></el-table-column>
+        <el-table-column prop="userId" label="用户编号"></el-table-column>
+        <el-table-column prop="totalPrice" label="商品总价"></el-table-column>
+        <el-table-column prop="orderStatus" label="订单状态"></el-table-column>
+        <el-table-column prop="orderTime" label="下单时间"></el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column prop="operation" label="操作" width="300px">
+            <template slot-scope="scope">
+                <el-button type="primary" icon="el-icon-truck" @click="handleClick(scope.row)">发货</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+
+    <el-row>
+        <el-col :span="24" style="text-align: right;margin-top:50px;">
+            <el-pagination
+                    :page-size="7"
+                    :page-count="2"
+                    background
+                    layout="prev, pager, next"
+                    :total="11">
+            </el-pagination>
+        </el-col>
+    </el-row>
+</div>
+
+</body>
+<script src="./vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="./element-ui/index.js"></script>
+<script src="./axios/axios.min.js"></script>
+<script src="./echarts/echarts.min.js"></script>
+
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                input: "",
+                formInline: {
+                    user: '',
+                    region: ''
+                },
+                products: [
+                    {
+                        orderId: 1,
+                        userId: 1,
+                        totalPrice: 100,
+                        orderStatus: "未发货",
+                        orderTime: "2019-10-10 12:00",
+                        remark: "好吧"
+                    },
+                    {
+                        orderId: 2,
+                        userId: 2,
+                        totalPrice: 100,
+                        orderStatus: "未发货",
+                        orderTime: "2019-10-10 12:00",
+                        remark: "好吧"
+                    },
+                    {
+                        orderId: 3,
+                        userId: 3,
+                        totalPrice: 100,
+                        orderStatus: "未发货",
+                        orderTime: "2019-10-10 12:00",
+                        remark: "好吧"
+                    },
+                    {
+                        orderId: 4,
+                        userId: 4,
+                        totalPrice: 100,
+                        orderStatus: "未发货",
+                        orderTime: "2019-10-10 12:00",
+                        remark: "好吧"
+                    },
+                    {
+                        orderId: 5,
+                        userId: 5,
+                        totalPrice: 100,
+                        orderStatus: "未发货",
+                        orderTime: "2019-10-10 12:00",
+                        remark: "好吧"
+                    },
+                    {
+                        orderId: 6,
+                        userId: 6,
+                        totalPrice: 100,
+                        orderStatus: "未发货",
+                        orderTime: "2019-10-10 12:00",
+                        remark: "好吧"
+                    },
+                    {
+                        orderId: 7,
+                        userId: 7,
+                        totalPrice: 100,
+                        orderStatus: "未发货",
+                        orderTime: "2019-10-10 12:00",
+                        remark: "好吧"
+                    },
+                ]
+            }
+        },
+        methods:{
+            onClear() {
+                this.keyword = "";
+            },
+            plus(){
+
+            },
+            onSubmit(){
+                console.log('submit!');
+            },
+            add(){
+                console.log("add");
+            }
+
+        }
+    });
+</script>
+<style lang="less">
+    html,body{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #app{
+        height: 100%;
+        width: 100%;
+    }
+
+    .table{
+        margin-top: 60px;
+    }
+
+    .title{
+        font-size: 25px;
+        margin-top: 50px;
+    }
+
+    .demo-form-inline{
+        margin-top: 20px;
+    }
+
+</style>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zfk.ssms.mapper.TbPurchaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.zfk.ssms.domain.TbPurchase">
+            <id property="purchaseId" column="purchase_id" jdbcType="BIGINT"/>
+            <result property="purchaseTime" column="purchase_time" jdbcType="TIMESTAMP"/>
+            <result property="productId" column="product_id" jdbcType="BIGINT"/>
+            <result property="providerId" column="provider_id" jdbcType="BIGINT"/>
+            <result property="purchaseCount" column="purchase_count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        purchase_id,purchase_time,product_id,
+        provider_id,purchase_count
+    </sql>
+</mapper>

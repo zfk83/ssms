@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单查询</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="./element-ui/index.css">
+</head>
+<body>
+<div id="app">
+    <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+        <el-breadcrumb-item><a href="/">订单管理</a></el-breadcrumb-item>
+        <el-breadcrumb-item>订单查询</el-breadcrumb-item>
+    </el-breadcrumb>
+    <div class="title">
+        <span>订单查询</span>
+    </div>
+    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form-item label="订单编号：">
+            <el-input v-model="formInline.region" placeholder="请输入订单编号"></el-input>
+        </el-form-item>
+        <el-form-item label="用户编号：">
+            <el-input v-model="formInline.region" placeholder="请输入用户编号"></el-input>
+        </el-form-item>
+        <el-form-item class="block">
+            <span class="demonstration">时间：</span>
+            <el-date-picker
+                    v-model="value2"
+                    type="datetimerange"
+                    :picker-options="pickerOptions"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    align="right">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item label="订单状态：">
+        <el-select v-model="formInline.region" placeholder="全部" >
+            <el-option label="已发货" value="Shipped"></el-option>
+            <el-option label="未发货" value="not shipped"></el-option>
+        </el-select>
+        </el-form-item>
+        <el-form-item>
+            <el-button  type="success" icon="el-icon-search" @click="onSubmit">搜索</el-button>
+            <el-button  type="primary" icon="el-icon-refresh" @click="add">重置</el-button>
+        </el-form-item>
+    </el-form>
+
+    <el-table :data="products" :border="true" class="table" >
+        <el-table-column prop="orderId" label="订单编号"></el-table-column>
+        <el-table-column prop="userId" label="用户编号"></el-table-column>
+        <el-table-column prop="totalPrice" label="商品总价"></el-table-column>
+        <el-table-column prop="orderStatus" label="订单状态"></el-table-column>
+        <el-table-column prop="orderTime" label="下单时间"></el-table-column>
+        <el-table-column prop="shippingAddress" label="收货地址"></el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
+    </el-table>
+
+    <el-row>
+        <el-col :span="24" style="text-align: right;margin-top:50px;">
+            <el-pagination
+                    :page-size="10"
+                    :page-count="1"
+                    background
+                    layout="prev, pager, next"
+                    :total="10">
+            </el-pagination>
+        </el-col>
+    </el-row>
+</div>
+
+</body>
+
+<script src="./vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="./element-ui/index.js"></script>
+<script src="./axios/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                input: "",
+                formInline: {
+                    user: '',
+                    region: ''
+                },
+                products: [
+                    {
+                        orderId: 1,
+                        userId: 1,
+                        totalPrice: 100,
+                        orderStatus: '已发货',
+                        orderTime: '2020-01-01 12:00',
+                        shippingAddress: '广东省广州市天河区',
+                        remark: '无',
+                    },
+                    {
+                        orderId: 2,
+                        userId: 2,
+                        totalPrice: 100,
+                        orderStatus: '已发货',
+                        orderTime: '2020-01-01 12:00',
+                        shippingAddress: '广东省广州市天河区',
+                        remark: '无',
+                    },
+                    {
+                        orderId: 3,
+                        userId: 3,
+                        totalPrice: 100,
+                        orderStatus: '已发货',
+                        orderTime: '2020-01-01 12:00',
+                        shippingAddress: '广东省广州市天河区',
+                        remark: '无',
+                    },
+                    {
+                        orderId: 4,
+                        userId: 4,
+                        totalPrice: 100,
+                        orderStatus: '已发货',
+                        orderTime: '2020-01-01 12:00',
+                        shippingAddress: '广东省广州市天河区',
+                        remark: '无',
+                    },
+                    {
+                        orderId: 5,
+                        userId: 5,
+                        totalPrice: 100,
+                        orderStatus: '已发货',
+                        orderTime: '2020-01-01 12:00',
+                        shippingAddress: '广东省广州市天河区',
+                        remark: '无',
+                    },
+                    {
+                        orderId: 6,
+                        userId: 6,
+                        totalPrice: 100,
+                        orderStatus: '已发货',
+                        orderTime: '2020-01-01 12:00',
+                        shippingAddress: '广东省广州市天河区',
+                        remark: '无',
+                    },
+                    {
+                        orderId: 7,
+                        userId: 7,
+                        totalPrice: 100,
+                        orderStatus: '已发货',
+                        orderTime: '2020-01-01 12:00',
+                        shippingAddress: '广东省广州市天河区',
+                        remark: '无',
+                    },
+                    {
+                        orderId: 8,
+                        userId: 8,
+                        totalPrice: 100,
+                        orderStatus: '已发货',
+                        orderTime: '2020-01-01 12:00',
+                        shippingAddress: '广东省广州市天河区',
+                        remark: '无',
+                    },
+                    {
+                        orderId: 9,
+                        userId: 9 ,
+                        totalPrice: 100,
+                        orderStatus: '已发货',
+                        orderTime: '2020-01-01 12:00',
+                        shippingAddress: '广东省广州市天河区',
+                        remark: '无',
+                    },
+                    {
+                        orderId: 10,
+                        userId: 10,
+                        totalPrice: 100,
+                        orderStatus: '已发货',
+                        orderTime: '2020-01-01 12:00',
+                        shippingAddress: '广东省广州市天河区',
+                        remark: '无',
+                    },
+                ]
+            }
+        },
+        methods:{
+            onClear() {
+                this.keyword = "";
+            },
+            plus(){
+
+            },
+            add(){
+                this.formInline.user = '';
+                this.formInline.region = '';
+            },
+            onSubmit(){
+                console.log(this.formInline);
+            }
+
+        }
+    });
+</script>
+<style lang="less">
+    html,body{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #app{
+        height: 100%;
+        width: 100%;
+    }
+
+    .table{
+        margin-top: 20px;
+    }
+
+    .title{
+        font-size: 25px;
+        margin-top: 50px;
+    }
+
+    .demo-form-inline{
+        margin-top: 20px;
+    }
+
+</style>
+</html>

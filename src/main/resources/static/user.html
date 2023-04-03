@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息管理</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="./element-ui/index.css">
+</head>
+<body>
+    <div id="app">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="/">用户管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item>用户信息管理</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="title">
+            <span>用户信息管理</span>
+        </div>
+        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+            <el-form-item label="用户姓名：">
+                <el-input v-model="formInline.region" placeholder="请输入用户姓名"></el-input>
+            </el-form-item>
+            <el-form-item style="margin-left: 20px">
+                <el-button  type="success" icon="el-icon-search" @click="onSubmit">开始查找</el-button>
+                <el-button  type="primary" icon="el-icon-plus" @click="add">新增用户</el-button>
+            </el-form-item>
+        </el-form>
+
+        <el-table :data="products" :border="true" class="table" >
+            <el-table-column prop="userId" label="用户编号"></el-table-column>
+            <el-table-column prop="userName" label="用户姓名"></el-table-column>
+            <el-table-column prop="password" label="密码"></el-table-column>
+            <el-table-column prop="phoneNumber" label="联系电话"></el-table-column>
+            <el-table-column prop="sex" label="性别"></el-table-column>
+            <el-table-column prop="operation" label="操作" width="450px">
+                <template slot-scope="scope">
+                    <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="handleClick(scope.row)">修改信息</el-button>
+                    <el-button type="info" style="width: 120px" icon="el-icon-edit" @click="handleClick(scope.row)">修改密码</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-row>
+            <el-col :span="24" style="text-align: right;margin-top:50px;">
+                <el-pagination
+                        :page-size="8"
+                        :page-count="1"
+                        background
+                        layout="prev, pager, next"
+                        :total="8">
+                </el-pagination>
+            </el-col>
+        </el-row>
+    </div>
+
+</body>
+
+<script src="./vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="./element-ui/index.js"></script>
+<script src="./axios/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                input: "",
+                formInline: {
+                    user: '',
+                    region: ''
+                },
+                products: [
+                    {
+                        userId: 1,
+                        userName: '蔡徐坤',
+                        password:'123456',
+                        phoneNumber: '12345678901',
+                        sex: '男',
+                    },
+                    {
+                        userId: 2,
+                        userName: '蔡徐坤',
+                        password:'123456',
+                        phoneNumber: '12345678901',
+                        sex: '男',
+                    },
+                    {
+                        userId: 3,
+                        userName: '蔡徐坤',
+                        password:'123456',
+                        phoneNumber: '12345678901',
+                        sex: '男',
+                    },
+                    {
+                        userId: 4,
+                        userName: '蔡徐坤',
+                        password:'123456',
+                        phoneNumber: '12345678901',
+                        sex: '男',
+                    },
+                    {
+                        userId: 5,
+                        userName: '蔡徐坤',
+                        password:'123456',
+                        phoneNumber: '12345678901',
+                        sex: '男',
+                    },
+                    {
+                        userId: 6,
+                        userName: '蔡徐坤',
+                        password:'123456',
+                        phoneNumber: '12345678901',
+                        sex: '男',
+                    },
+                    {
+                        userId: 7,
+                        userName: '蔡徐坤',
+                        password:'123456',
+                        phoneNumber: '12345678901',
+                        sex: '男',
+                    },
+                    {
+                        userId: 8,
+                        userName: '蔡徐坤',
+                        password:'123456',
+                        phoneNumber: '12345678901',
+                        sex: '男',
+                    },
+                ]
+            }
+        },
+        methods:{
+            onClear() {
+                this.keyword = "";
+            },
+            plus(){
+
+            },
+            onSubmit(){
+                alert("开始查找");
+            },
+            add(){
+                alert("新增用户");
+            }
+        }
+    });
+</script>
+<style lang="less">
+    html,body{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #app{
+        height: 100%;
+        width: 100%;
+    }
+
+    .table{
+        margin-top: 20px;
+    }
+
+    .title{
+        font-size: 25px;
+        margin-top: 50px;
+    }
+
+    .demo-form-inline{
+        margin-top: 20px;
+    }
+
+</style>
+</html>

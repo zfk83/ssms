@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>时段销售统计</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="./element-ui/index.css">
+</head>
+<body>
+<div id="app">
+    <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+        <el-breadcrumb-item><a href="/">销售统计</a></el-breadcrumb-item>
+        <el-breadcrumb-item>时段销售统计</el-breadcrumb-item>
+    </el-breadcrumb>
+    <div class="title">
+        <span>时段销售统计</span>
+    </div>
+    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+
+        <el-form-item class="block">
+                <span class="demonstration">选择年：</span>
+                <el-date-picker
+                        v-model="value1"
+                        type="year"
+                        placeholder="选择年">
+                </el-date-picker>
+        </el-form-item>
+
+        <el-form-item class="block">
+            <span class="demonstration">选择月：</span>
+            <el-date-picker
+                    v-model="value2"
+                    type="month"
+                    placeholder="选择月">
+            </el-date-picker>
+        </el-form-item>
+
+        <el-form-item class="block">
+                <span class="demonstration">选择周：</span>
+                <el-date-picker
+                        v-model="value3"
+                        type="week"
+                        format="yyyy 第 WW 周"
+                        placeholder="选择周">
+                </el-date-picker>
+        </el-form-item>
+
+        <el-form-item class="block">
+            <span class="demonstration">时间：</span>
+            <el-date-picker
+                    v-model="value2"
+                    type="datetimerange"
+                    :picker-options="pickerOptions"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    align="right">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+            <el-button  type="danger" icon="el-icon-data-board" @click="onSubmit">统计</el-button>
+        </el-form-item>
+    </el-form>
+
+    <el-table :data="products" :border="true" class="table" >
+        <el-table-column prop="productId" label="商品编号"></el-table-column>
+        <el-table-column prop="productName" label="商品名称"></el-table-column>
+        <el-table-column prop="groupName" label="分类名称"></el-table-column>
+        <el-table-column prop="purchasePrice" label="进货价格"></el-table-column>
+        <el-table-column prop="salePrice" label="销售价格"></el-table-column>
+        <el-table-column prop="saleCount" label="销售数量"></el-table-column>
+        <el-table-column prop="profit" label="净利润"></el-table-column>
+    </el-table>
+
+    <el-row>
+        <el-col :span="24" style="text-align: right;margin-top:50px;">
+            <el-pagination
+                    :page-size="10"
+                    :page-count="2"
+                    background
+                    layout="prev, pager, next"
+                    :total="16">
+            </el-pagination>
+        </el-col>
+    </el-row>
+</div>
+
+</body>
+
+<script src="./vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="./element-ui/index.js"></script>
+<script src="./axios/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                input: "",
+                formInline: {
+                    user: '',
+                    region: ''
+                },
+                products: [
+                    {
+                        productId: 1,
+                        productName: '商品1',
+                        groupName: '分类1',
+                        purchasePrice: 100,
+                        salePrice: 100,
+                        saleCount: 100,
+                        profit: 100,
+                    },
+                    {
+                        productId: 2,
+                        productName: '商品2',
+                        groupName: '分类2',
+                        purchasePrice: 100,
+                        salePrice: 100,
+                        saleCount: 100,
+                        profit: 100,
+                    },
+                    {
+                        productId: 3,
+                        productName: '商品3',
+                        groupName: '分类3',
+                        purchasePrice: 100,
+                        salePrice: 100,
+                        saleCount: 100,
+                        profit: 100,
+                    },
+                    {
+                        productId: 4,
+                        productName: '商品4',
+                        groupName: '分类4',
+                        purchasePrice: 100,
+                        salePrice: 100,
+                        saleCount: 100,
+                        profit: 100,
+                    },
+                    {
+                        productId: 5,
+                        productName: '商品5',
+                        groupName: '分类5',
+                        purchasePrice: 100,
+                        salePrice: 100,
+                        saleCount: 100,
+                        profit: 100,
+                    },
+                    {
+                        productId: 6,
+                        productName: '商品6',
+                        groupName: '分类6',
+                        purchasePrice: 100,
+                        salePrice: 100,
+                        saleCount: 100,
+                        profit: 100,
+                    },
+                    {
+                        productId: 7,
+                        productName: '商品7',
+                        groupName: '分类7',
+                        purchasePrice: 100,
+                        salePrice: 100,
+                        saleCount: 100,
+                        profit: 100,
+                    },
+                    {
+                        productId: 8,
+                        productName: '商品8',
+                        groupName: '分类8',
+                        purchasePrice: 100,
+                        salePrice: 100,
+                        saleCount: 100,
+                        profit: 100,
+                    },
+                    {
+                        productId: 9,
+                        productName: '商品9',
+                        groupName: '分类9',
+                        purchasePrice: 100,
+                        salePrice: 100,
+                        saleCount: 100,
+                        profit: 100,
+                    },
+                    {
+                        productId: 10,
+                        productName: '商品10',
+                        groupName: '分类10',
+                        purchasePrice: 100,
+                        salePrice: 100,
+                        saleCount: 100,
+                        profit: 100,
+                    },
+                ]
+            }
+        },
+        methods:{
+            onClear() {
+                this.keyword = "";
+            },
+            plus(){
+
+            },
+            add(){
+                this.formInline.user = '';
+                this.formInline.region = '';
+            },
+            onSubmit(){
+                console.log(this.formInline);
+            }
+
+        }
+    });
+</script>
+<style lang="less">
+    html,body{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #app{
+        height: 100%;
+        width: 100%;
+    }
+
+    .table{
+        margin-top: 20px;
+    }
+
+    .title{
+        font-size: 25px;
+        margin-top: 50px;
+    }
+
+    .demo-form-inline{
+        margin-top: 20px;
+    }
+</style>
+</html>

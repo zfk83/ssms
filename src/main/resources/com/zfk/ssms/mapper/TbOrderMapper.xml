@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zfk.ssms.mapper.TbOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.zfk.ssms.domain.TbOrder">
+            <id property="orderId" column="order_id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="orderStatus" column="order_status" jdbcType="VARCHAR"/>
+            <result property="totalPrice" column="total_price" jdbcType="DECIMAL"/>
+            <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="shippingAddress" column="shipping_address" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        order_id,user_id,order_status,
+        total_price,order_time,remark,
+        shipping_address
+    </sql>
+</mapper>

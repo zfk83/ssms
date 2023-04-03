@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dashboard</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="./element-ui/index.css">
+</head>
+<body>
+    <div id="app">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="/">dashboard</a></el-breadcrumb-item>
+        </el-breadcrumb>
+
+        <span>欢迎登录智慧超市管理系统！</span>
+    </div>
+</body>
+
+<script src="./vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="./element-ui/index.js"></script>
+<script src="./axios/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data(){
+            return {
+                input: "",
+                formInline: {
+                    user: '',
+                    region: ''
+                },
+                products: [
+
+                ]
+            }
+        },
+        methods: {
+            onClear() {
+                this.keyword = "";
+            },
+            plus(){
+
+            },
+            onSubmit() {
+                console.log('submit!');
+            },
+            add(){
+                this.products.push({
+                    name: this.input,
+                    price: 0,
+                    count: 0
+                });
+                this.input = "";
+            },
+
+        }
+    });
+</script>
+<style lang="less">
+    html,body{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #app{
+        height: 100%;
+        width: 100%;
+    }
+
+    .table{
+        margin-top: 20px;
+    }
+
+    .title{
+        font-size: 25px;
+        margin-top: 50px;
+    }
+
+    .demo-form-inline{
+        margin-top: 20px;
+    }
+
+</style>
+
+</html>

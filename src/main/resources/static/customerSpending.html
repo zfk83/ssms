@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>顾客消费统计</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="./element-ui/index.css">
+</head>
+<body>
+<div id="app">
+    <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+        <el-breadcrumb-item><a href="/">销售统计</a></el-breadcrumb-item>
+        <el-breadcrumb-item>顾客消费统计</el-breadcrumb-item>
+    </el-breadcrumb>
+    <div class="title">
+        <span>顾客消费统计</span>
+    </div>
+    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form-item label="顾客编号：">
+            <el-input v-model="formInline.region" placeholder="请输入顾客编号"></el-input>
+        </el-form-item>
+        <el-form-item label="顾客姓名：">
+            <el-input v-model="formInline.region" placeholder="请输入顾客姓名"></el-input>
+        </el-form-item>
+        <el-form-item class="block">
+            <span class="demonstration">时间：</span>
+            <el-date-picker
+                    v-model="value2"
+                    type="datetimerange"
+                    :picker-options="pickerOptions"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    align="right">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+            <el-button  type="danger" icon="el-icon-data-board" @click="onSubmit">统计</el-button>
+        </el-form-item>
+    </el-form>
+
+    <el-table :data="products" :border="true" class="table" >
+        <el-table-column prop="userId" label="顾客编号"></el-table-column>
+        <el-table-column prop="userName" label="顾客姓名"></el-table-column>
+        <el-table-column prop="orderId" label="订单编号"></el-table-column>
+        <el-table-column prop="orderTime" label="订单时间"></el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column prop="operation" label="操作" width="450px">
+            <template slot-scope="scope">
+                <el-button type="info" style="width: 120px" icon="el-icon-document" @click="handleClick(scope.row)">购买信息</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+
+    <el-row>
+        <el-col :span="24" style="text-align: right;margin-top:50px;">
+            <el-pagination
+                    :page-size="10"
+                    :page-count="2"
+                    background
+                    layout="prev, pager, next"
+                    :total="16">
+            </el-pagination>
+        </el-col>
+    </el-row>
+</div>
+
+</body>
+
+<script src="./vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="./element-ui/index.js"></script>
+<script src="./axios/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                input: "",
+                formInline: {
+                    user: '',
+                    region: ''
+                },
+                products: [
+                    {
+                        userId: 1,
+                        userName: '顾客1',
+                        orderId: 1,
+                        orderTime: '2019-01-01',
+                        remark: '备注1',
+                    },
+                    {
+                        userId: 2,
+                        userName: '顾客2',
+                        orderId: 2,
+                        orderTime: '2019-01-02',
+                        remark: '备注2',
+                    },
+                    {
+                        userId: 3,
+                        userName: '顾客3',
+                        orderId: 3,
+                        orderTime: '2019-01-03',
+                        remark: '备注3',
+                    },
+                    {
+                        userId: 4,
+                        userName: '顾客4',
+                        orderId: 4,
+                        orderTime: '2019-01-04',
+                        remark: '备注4',
+                    },
+                    {
+                        userId: 5,
+                        userName: '顾客5',
+                        orderId: 5,
+                        orderTime: '2019-01-05',
+                        remark: '备注5',
+                    },
+                    {
+                        userId: 6,
+                        userName: '顾客6',
+                        orderId: 6,
+                        orderTime: '2019-01-06',
+                        remark: '备注6',
+                    },
+                    {
+                        userId: 7,
+                        userName: '顾客7',
+                        orderId: 7,
+                        orderTime: '2019-01-07',
+                        remark: '备注7',
+                    },
+                ]
+            }
+        },
+        methods:{
+            onClear() {
+                this.keyword = "";
+            },
+            plus(){
+
+            },
+            add(){
+                this.formInline.user = '';
+                this.formInline.region = '';
+            },
+            onSubmit(){
+                console.log(this.formInline);
+            }
+
+        }
+    });
+</script>
+<style lang="less">
+    html,body{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #app{
+        height: 100%;
+        width: 100%;
+    }
+
+    .table{
+        margin-top: 20px;
+    }
+
+    .title{
+        font-size: 25px;
+        margin-top: 50px;
+    }
+
+    .demo-form-inline{
+        margin-top: 20px;
+    }
+</style>
+</html>
