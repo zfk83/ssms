@@ -62,6 +62,11 @@ public class TbProduct implements Serializable {
      */
     private Date yieldTime;
 
+    /**
+     * 
+     */
+    private String photo;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -85,7 +90,8 @@ public class TbProduct implements Serializable {
             && (this.getSalePrice() == null ? other.getSalePrice() == null : this.getSalePrice().equals(other.getSalePrice()))
             && (this.getSaleCount() == null ? other.getSaleCount() == null : this.getSaleCount().equals(other.getSaleCount()))
             && (this.getStock() == null ? other.getStock() == null : this.getStock().equals(other.getStock()))
-            && (this.getYieldTime() == null ? other.getYieldTime() == null : this.getYieldTime().equals(other.getYieldTime()));
+            && (this.getYieldTime() == null ? other.getYieldTime() == null : this.getYieldTime().equals(other.getYieldTime()))
+            && (this.getPhoto() == null ? other.getPhoto() == null : this.getPhoto().equals(other.getPhoto()));
     }
 
     @Override
@@ -101,6 +107,7 @@ public class TbProduct implements Serializable {
         result = prime * result + ((getSaleCount() == null) ? 0 : getSaleCount().hashCode());
         result = prime * result + ((getStock() == null) ? 0 : getStock().hashCode());
         result = prime * result + ((getYieldTime() == null) ? 0 : getYieldTime().hashCode());
+        result = prime * result + ((getPhoto() == null) ? 0 : getPhoto().hashCode());
         return result;
     }
 
@@ -119,6 +126,7 @@ public class TbProduct implements Serializable {
         sb.append(", saleCount=").append(saleCount);
         sb.append(", stock=").append(stock);
         sb.append(", yieldTime=").append(yieldTime);
+        sb.append(", photo=").append(photo);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

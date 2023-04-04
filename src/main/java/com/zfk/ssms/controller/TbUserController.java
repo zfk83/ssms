@@ -50,7 +50,6 @@ public class TbUserController {
         LambdaQueryWrapper<TbUser> wrapper = new LambdaQueryWrapper<TbUser>().eq(TbUser::getUserName, tbUser.getUserName());
         wrapper.eq(TbUser::getPassword, tbUser.getPassword());
         TbUser user = tbUserService.getOne(wrapper);
-        System.out.println("hello");
         if (user != null) {
             return Result.success(user, "登录成功");
         } else {

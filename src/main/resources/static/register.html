@@ -13,11 +13,11 @@
             <div class="title">
                 <span>用户注册</span>
             </div>
-            <el-form-item label="用户名:" prop="name">
-                <el-input v-model="ruleForm.name"></el-input>
+            <el-form-item label="用户名:" prop="userName">
+                <el-input v-model="ruleForm.userName"></el-input>
             </el-form-item>
-            <el-form-item label="密码:" prop="pass">
-                <el-input type="password" v-model="ruleForm.pass" show-password autocomplete="off"></el-input>
+            <el-form-item label="密码:" prop="password">
+                <el-input type="password" v-model="ruleForm.password" show-password autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="确认密码:" prop="checkPass">
                 <el-input type="password" v-model="ruleForm.checkPass" show-password autocomplete="off"></el-input>
@@ -28,11 +28,11 @@
                     <el-radio label="女"></el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="联系电话:" prop="phone">
-                <el-input v-model="ruleForm.phone"></el-input>
+            <el-form-item label="联系电话:" prop="phoneNumber">
+                <el-input v-model="ruleForm.phoneNumber"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="success" icon="el-icon-check" @click="onSubmit" @click="submitForm('ruleForm')">提交</el-button>
+                <el-button type="success" icon="el-icon-check" @click="submitForm('ruleForm')">提交</el-button>
                 <el-button type="primary" icon="el-icon-refresh" @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
         </el-form>
@@ -43,6 +43,8 @@
 <!-- 引入组件库 -->
 <script src="./element-ui/index.js"></script>
 <script src="./axios/axios.min.js"></script>
+<script src="./utils/request.js"></script>
+<script src="./api/user.js"></script>
 
 <script>
     new Vue({
@@ -52,8 +54,8 @@
                 if (value === '') {
                     callback(new Error('请输入用户名'));
                 } else {
-                    if (this.ruleForm.name !== '') {
-                        this.$refs.ruleForm.validateField('checkName');
+                    if (this.ruleForm.userName !== '') {
+                        this.$refs.ruleForm.validateField('userName');
                     }
                     callback();
                 }
@@ -71,7 +73,7 @@
             var validatePass2 = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('请再次输入密码'));
-                } else if (value !== this.ruleForm.pass) {
+                } else if (value !== this.ruleForm.password) {
                     callback(new Error('两次输入密码不一致!'));
                 } else {
                     callback();
@@ -81,41 +83,55 @@
                 if (value === '') {
                     callback(new Error('请输入联系电话'));
                 } else {
-                    if (this.ruleForm.phone !== '') {
-                        this.$refs.ruleForm.validateField('checkPhone');
+                    if (this.ruleForm.phoneNumber !== '') {
+                        this.$refs.ruleForm.validateField('phoneNumber');
                     }
                     callback();
                 }
             };
             return {
                 ruleForm: {
-                    name: '',
-                    pass: '',
+                    userName: '',
+                    password: '',
                     checkPass: '',
-                    phone: '',
+                    phoneNumber: '',
+                    sex:'',
                 },
                 rules: {
-                    name: [
-                        { validator: validateName, trigger: 'blur' }
+                    userName: [
+                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                        {min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur'}
                     ],
-                    pass: [
-                        { validator: validatePass, trigger: 'blur' }
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {min: 8, max: 20, message: '长度在 8 到 20 个字符', trigger: 'blur'}
                     ],
                     checkPass: [
                         { validator: validatePass2, trigger: 'blur' }
                     ],
-                    phone: [
-                        { validator: validatePhone, trigger: 'blur' }
+                    phoneNumber: [
+                        {required: true, message: '请输入联系电话', trigger: 'blur'},
+                        {min: 11, max: 11, message: '长度为 11 个字符', trigger: 'blur'}
                     ],
+                    sex:[
+                        {required: true, message: '请选择性别', trigger: 'blur'}
+                    ]
                 }
             };
         },
 
         methods:{
             submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
+                this.$refs['ruleForm'].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        register(this.ruleForm).then(response => {
+                            if (response.flag) {
+                                localStorage.setItem('registerMessage', response.msg);
+                                window.location.href = "/login.html"
+                            }
+                        }).catch(error => {
+                            console.log("test")
+                        })
                     } else {
                         console.log('error submit!!');
                         return false;

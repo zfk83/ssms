@@ -42,4 +42,8 @@ public class TbProductController {
         tbProductService.getById(groupId);
         return Result.success(tbProductService.getById(groupId), "查询成功");
     }
+    @GetMapping("/list")
+    public Result listProduct() {
+        return Result.success(tbProductService.getProductList(), null);
+    }
 }

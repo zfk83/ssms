@@ -20,11 +20,14 @@
         response => {
             const res = response.data;
             if (res.flag) {
-                window.ELEMENT.Message({
-                    message: res.msg,
-                    type: 'success',
-                    duration: 5 * 1000
-                });
+                if(res.msg){
+                    window.ELEMENT.Message({
+                        message: res.msg,
+                        type: 'success',
+                        duration: 5 * 1000
+                    });
+                }
+
             }else {
                 window.ELEMENT.Message({
                     message: res.msg,

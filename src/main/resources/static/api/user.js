@@ -8,9 +8,8 @@ function login(data){
 
 function register(data){
     return request({
-        url: '/user/add',
+        url: '/user/register',
         method: 'post',
         data: data
     })
 }
-

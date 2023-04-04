@@ -109,10 +109,14 @@
             }
         },
         created(){
-            this.$message({
-                message: localStorage.getItem('loginMessage'),
-                type: 'success'
-            });
+            if(localStorage.getItem('loginMessage') != null){
+                this.$message({
+                    message: localStorage.getItem('loginMessage'),
+                    type: 'success'
+                });
+                localStorage.removeItem('loginMessage');
+            }
+
         }
     });
 </script>

@@ -14,11 +14,13 @@
             <result property="saleCount" column="sale_count" jdbcType="INTEGER"/>
             <result property="stock" column="stock" jdbcType="BIGINT"/>
             <result property="yieldTime" column="yield_time" jdbcType="TIMESTAMP"/>
+            <result property="photo" column="photo" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         product_id,product_name,provider_id,
         group_id,create_time,sale_price,
-        sale_count,stock,yield_time
+        sale_count,stock,yield_time,
+        photo
     </sql>
 </mapper>

@@ -44,7 +44,7 @@
             </el-table-column>
             <el-table-column prop="provider" label="供应商"></el-table-column>
             <el-table-column prop="yieldTime" label="生产日期"></el-table-column>
-            <el-table-column prop="price" label="价格"></el-table-column>
+            <el-table-column prop="salePrice" label="价格"></el-table-column>
             <el-table-column prop="saleCount" label="售出数"></el-table-column>
             <el-table-column prop="stock" label="库存数"></el-table-column>
             <el-table-column prop="operation" label="操作" width="300px">
@@ -72,6 +72,8 @@
 <!-- 引入组件库 -->
 <script src="./element-ui/index.js"></script>
 <script src="./axios/axios.min.js"></script>
+<script src="./utils/request.js"></script>
+<script src="api/product.js"></script>
 
 <script>
     new Vue({
@@ -85,62 +87,6 @@
                     group: '',
                 },
                 products: [
-                    {
-                        productId: 1,
-                        productName: '可口可乐魂境可乐型汽水',
-                        group: '饮料',
-                        photo:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                        provider:'江苏太古可口可乐饮料有限公司',
-                        yieldTime:'2023-01-20',
-                        price: 4,
-                        saleCount:5,
-                        stock: 10,
-                    },
-                    {
-                        productId: 2,
-                        productName: '椰蓉酥条',
-                        group: '食品',
-                        photo:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                        provider:'广莲申点心有限公司',
-                        yieldTime:'2023-03-01',
-                        price: 23.8,
-                        saleCount:15,
-                        stock: 20,
-                    },
-                    {
-                        productId: 3,
-                        productName: '清风牌面巾纸',
-                        group: '生活用品',
-                        photo:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                        provider:'金红叶纸业集团有限公司',
-                        yieldTime:'2022-08-26',
-                        price: 21.5,
-                        saleCount:7,
-                        stock: 18,
-                    },
-                    {
-                        productId: 4,
-                        productName: '纸世界PVP固体胶棒',
-                        group: '文具',
-                        photo:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                        provider:'上海折纸乐文化用品有限公司',
-                        yieldTime:'2022-10-20',
-                        price: 2.5,
-                        saleCount:6,
-                        stock: 47,
-                    },
-                    {
-                        productId: 5,
-                        productName: '趣先眼镜清洗液',
-                        group: '生活用品',
-                        photo:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                        provider:'临海市圣蓝眼镜有限公司',
-                        yieldTime:'2022-11-20',
-                        price: 3.6,
-                        saleCount:5,
-                        stock: 23,
-                    }
-                    // ...
                 ]
             };
         },
@@ -159,6 +105,15 @@
             add(){
 
             },
+
+            getProducts(){
+                getProducts().then(response => {
+                    this.products = response.data;
+                })
+            },
+        },
+        created(){
+            this.getProducts();
         }
     });
 </script>

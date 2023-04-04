@@ -72,7 +72,16 @@
                 });
             },
             signup() {
-                window.location.href = "http://localhost/register.html"
+                window.location.href = "/register.html"
+            }
+        },
+        mounted() {
+            if (localStorage.getItem('registerMessage') != null) {
+                this.$message({
+                    message: localStorage.getItem('registerMessage'),
+                    type: 'success'
+                });
+                localStorage.removeItem('registerMessage');
             }
         }
     });
