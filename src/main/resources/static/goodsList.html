@@ -19,17 +19,49 @@
 
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="商品编号：">
-                <el-input v-model="formInline.user" placeholder="请输入商品编号"></el-input>
+                <el-input v-model="formInline.productId" placeholder="请输入商品编号"></el-input>
             </el-form-item>
             <el-form-item label="商品名称：">
-                <el-input v-model="formInline.region" placeholder="请输入商品名称"></el-input>
+                <el-input v-model="formInline.productName" placeholder="请输入商品名称"></el-input>
             </el-form-item>
             <el-form-item label="商品类别：">
-                <el-input v-model="formInline.region" placeholder="请输入商品类别"></el-input>
+                <el-input v-model="formInline.group" placeholder="请输入商品类别"></el-input>
             </el-form-item>
             <el-form-item style="margin-left: 20px">
                 <el-button  type="success" icon="el-icon-search" @click="onSearch">开始查找</el-button>
-                <el-button  type="primary" icon="el-icon-plus" @click="add">新增商品</el-button>
+                <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增商品</el-button>
+                <el-dialog title="新增商品" :visible.sync="dialogFormVisible" >
+                    <el-form :model="form">
+                        <el-form-item label="商品编号" :label-width="formLabelWidth">
+                            <el-input v-model="form.productId" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品名称" :label-width="formLabelWidth">
+                            <el-input v-model="form.productName" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="分类" :label-width="formLabelWidth">
+                            <el-input v-model="form.group" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="图片" :label-width="formLabelWidth">
+                            <el-input v-model="form.photo" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="生产日期" :label-width="formLabelWidth">
+                            <el-input v-model="form.yieldTime" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="价格" :label-width="formLabelWidth">
+                            <el-input v-model="form.salePrice" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="售出数" :label-width="formLabelWidth">
+                            <el-input v-model="form.saleCount" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="库存数" :label-width="formLabelWidth">
+                            <el-input v-model="form.stock" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="dialogFormVisible = false">取 消</el-button>
+                        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                    </div>
+                </el-dialog>
             </el-form-item>
         </el-form>
 
@@ -87,7 +119,24 @@
                     group: '',
                 },
                 products: [
-                ]
+                ],
+                dialogFormVisible: false,
+                form: {
+                    productId: '',
+                    productName: '',
+                    group: '',
+                    photo: '',
+                    provider: '',
+                    yieldTime: '',
+                    salePrice: '',
+                    saleCount: '',
+                    stock: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: ''
+                },
+                formLabelWidth: '120px'
             };
         },
 
@@ -102,9 +151,7 @@
                         console.error(error);
                     });
             },
-            add(){
 
-            },
 
             getProducts(){
                 getProducts().then(response => {
@@ -142,6 +189,7 @@
     .demo-form-inline{
         margin-top: 20px;
     }
+
 
 </style>
 </html>

@@ -17,7 +17,24 @@
         <span>商品分类</span>
         </div>
 
-        <el-button style="margin-top: 30px" type="primary" icon="el-icon-plus" @click="plus">新增商品分类</el-button>
+        <el-button style="margin-top: 30px" type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增商品分类</el-button>
+        <el-dialog title="新增商品分类" :visible.sync="dialogFormVisible" >
+            <el-form :model="form">
+                <el-form-item label="商品编号" :label-width="formLabelWidth">
+                    <el-input v-model="form.productId" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="分类" :label-width="formLabelWidth">
+                    <el-input v-model="form.group" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片" :label-width="formLabelWidth">
+                    <el-input v-model="form.photo" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
 
         <el-table :data="products" :border="true" class="table">
             <el-table-column prop="productId" label="商品编号"></el-table-column>
@@ -61,8 +78,9 @@
             return {
                 input: "",
                 formInline: {
-                    user: '',
-                    region: ''
+                    productId: '',
+                    group: '',
+                    photo: '',
                 },
                 products: [
                     {
@@ -85,7 +103,18 @@
                         group: '生活用品',
                         photo:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
                     },
-                ]
+                ],
+                dialogFormVisible: false,
+                form: {
+                    productId: '',
+                    group: '',
+                    photo: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: ''
+                },
+                formLabelWidth: '120px'
             }
         },
         methods:{
