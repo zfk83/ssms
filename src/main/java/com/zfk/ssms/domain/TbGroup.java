@@ -30,6 +30,11 @@ public class TbGroup implements Serializable {
      */
     private Integer groupCount;
 
+    /**
+     * 分类图片
+     */
+    private String groupPhoto;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

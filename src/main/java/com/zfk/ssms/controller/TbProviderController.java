@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/provider")
 @CrossOrigin
-public class TbProviderController {
+public class  TbProviderController {
     @Autowired
     private TbProviderService tbProviderService;
 
@@ -26,8 +26,8 @@ public class TbProviderController {
     }
 
     @DeleteMapping("/delete")
-    public Result deleteProvider(@RequestBody TbProvider tbProvider) {
-        tbProviderService.removeById(tbProvider.getProviderId());
+    public Result deleteProvider(Long id) {
+        tbProviderService.removeById(id);
         return Result.success(null, "删除成功");
     }
 
@@ -41,5 +41,10 @@ public class TbProviderController {
     public Result getGroup(@RequestBody Long groupId) {
         tbProviderService.getById(groupId);
         return Result.success(tbProviderService.getById(groupId), "查询成功");
+    }
+
+    @GetMapping("/list")
+    public Result listProvider() {
+        return Result.success(tbProviderService.list(), null);
     }
 }

@@ -24,9 +24,9 @@
         <el-table :data="groups" :border="true" class="table">
             <el-table-column prop="groupId" label="分类编号"></el-table-column>
             <el-table-column prop="groupName" label="分类"></el-table-column>
-            <el-table-column prop="photo" label="图片">
+            <el-table-column prop="groupPhoto" label="图片">
                 <template slot-scope="scope">
-                    <img :src="scope.row.photo" width="80px" height="80px"/>
+                    <img :src="scope.row.groupPhoto" width="80px" height="80px"/>
                 </template>
             </el-table-column>
             <el-table-column prop="operation" label="操作" width="300px">
@@ -59,7 +59,7 @@
                 <el-input v-model="form.groupName" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="图片" :label-width="formLabelWidth">
-                <el-input v-model="form.photo" autocomplete="off"></el-input>
+                <el-input v-model="form.groupPhoto" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -86,7 +86,7 @@
                 formInline: {
                     groupId: '',
                     groupName: '',
-                    photo: '',
+                    groupPhoto: '',
                 },
                 groups: [
 
@@ -95,24 +95,12 @@
                 form: {
                     groupId: '',
                     groupName: '',
-                    photo: '',
+                    groupPhoto: '',
                 },
                 formLabelWidth: '120px'
             }
         },
         methods: {
-            onClear() {
-                this.keyword = "";
-            },
-            plus() {
-
-            },
-            onSubmit() {
-                console.log('submit!');
-            },
-            add() {
-                console.log("add");
-            },
             getGroups() {
                 getGroups().then(response => {
                     this.groups = response.data;
