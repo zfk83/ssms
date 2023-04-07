@@ -7,21 +7,23 @@
     <link rel="stylesheet" href="./element-ui/index.css">
 </head>
 <body>
-    <div id="app">
-        <div style="padding: 20px;">
+<div id="app">
+    <div style="padding: 20px;">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
             <el-breadcrumb-item><a href="/">商品管理</a></el-breadcrumb-item>
             <el-breadcrumb-item>商品分类管理</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="title">
-        <span>商品分类</span>
+            <span>商品分类</span>
         </div>
 
-        <el-button style="margin-top: 30px" type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增商品分类</el-button>
-        <el-table :data="products" :border="true" class="table">
-            <el-table-column prop="productId" label="商品编号"></el-table-column>
-            <el-table-column prop="group" label="分类"></el-table-column>
+        <el-button style="margin-top: 30px" type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">
+            新增商品分类
+        </el-button>
+        <el-table :data="groups" :border="true" class="table">
+            <el-table-column prop="groupId" label="分类编号"></el-table-column>
+            <el-table-column prop="groupName" label="分类"></el-table-column>
             <el-table-column prop="photo" label="图片">
                 <template slot-scope="scope">
                     <img :src="scope.row.photo" width="80px" height="80px"/>
@@ -30,7 +32,7 @@
             <el-table-column prop="operation" label="操作" width="300px">
                 <template slot-scope="scope">
                     <el-button type="primary" icon="el-icon-edit" @click="handleClick(scope.row)">修改分类</el-button>
-                    <el-button type="danger" icon="el-icon-delete" @click="handleClick(scope.row)">删除分类</el-button>
+                    <el-button type="danger" icon="el-icon-delete" @click="cancelGroup(scope.row)">删除分类</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -48,111 +50,112 @@
         </el-row>
     </div>
 
-        <el-dialog title="新增商品分类" :visible.sync="dialogFormVisible" >
-            <el-form :model="form">
-                <el-form-item label="商品编号" :label-width="formLabelWidth">
-                    <el-input v-model="form.productId" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="分类" :label-width="formLabelWidth">
-                    <el-input v-model="form.group" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="图片" :label-width="formLabelWidth">
-                    <el-input v-model="form.photo" autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-            </div>
-        </el-dialog>
-    </div>
+    <el-dialog title="新增商品分类" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item label="分类编号" :label-width="formLabelWidth">
+                <el-input v-model="form.groupId" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="分类" :label-width="formLabelWidth">
+                <el-input v-model="form.groupName" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="图片" :label-width="formLabelWidth">
+                <el-input v-model="form.photo" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </div>
+    </el-dialog>
+</div>
 
 </body>
 <script src="./vue/vue.js"></script>
 <!-- 引入组件库 -->
 <script src="./element-ui/index.js"></script>
 <script src="./axios/axios.min.js"></script>
+<script src="./utils/request.js"></script>
+<script src="api/group.js"></script>
 
 <script>
     new Vue({
-        el:'#app',
-        data(){
+        el: '#app',
+        data() {
             return {
                 input: "",
                 formInline: {
-                    productId: '',
-                    group: '',
+                    groupId: '',
+                    groupName: '',
                     photo: '',
                 },
-                products: [
-                    {
-                        productId: 1,
-                        group: '饮料',
-                        photo:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    },
-                    {
-                        productId: 2,
-                        group: '食品',
-                        photo:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    },
-                    {
-                        productId: 3,
-                        group: '文具',
-                        photo:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    },
-                    {
-                        productId: 4,
-                        group: '生活用品',
-                        photo:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    },
+                groups: [
+
                 ],
                 dialogFormVisible: false,
                 form: {
-                    productId: '',
-                    group: '',
+                    groupId: '',
+                    groupName: '',
                     photo: '',
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
                 },
                 formLabelWidth: '120px'
             }
         },
-        methods:{
+        methods: {
             onClear() {
                 this.keyword = "";
             },
-            plus(){
+            plus() {
 
             },
-            onSubmit(){
+            onSubmit() {
                 console.log('submit!');
             },
-            add(){
+            add() {
                 console.log("add");
-            }
-
-        }
+            },
+            getGroups() {
+                getGroups().then(response => {
+                    this.groups = response.data;
+                })
+            },
+            cancelGroup(row) {
+                this.$confirm('确认删除该分类吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deleteGroup(row.groupId).then(response => {
+                        this.getGroups();
+                    })
+                }).catch(() => {
+                    // 取消删除操作
+                    this.$message.info('已取消删除')
+                })
+            },
+        },
+        mounted() {
+            this.getGroups();
+        },
     });
 </script>
 <style lang="less">
-    html,body{
+    html, body {
         height: 100%;
         width: 100%;
         margin: 0;
         padding: 0;
     }
-    #app{
+
+    #app {
         height: 100%;
         width: 100%;
     }
 
-    .table{
+    .table {
         margin-top: 60px;
     }
 
-    .title{
+    .title {
         font-size: 25px;
         margin-top: 50px;
     }

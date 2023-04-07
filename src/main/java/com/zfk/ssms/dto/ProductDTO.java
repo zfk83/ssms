@@ -27,16 +27,22 @@ public class ProductDTO implements Serializable {
      */
     private Long providerId;
 
+    /**
+     * 供应商名称
+     */
+
     private String provider;
 
     /**
      * 分类编号
      */
     private Long groupId;
+
     /**
      * 分类名称
      */
     private String group;
+
     /**
      * 图片
      */

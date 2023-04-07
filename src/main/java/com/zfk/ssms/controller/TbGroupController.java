@@ -27,8 +27,8 @@ public class TbGroupController {
     }
 
     @DeleteMapping("/delete")
-    public Result deleteGroup(@RequestBody TbGroup tbGroup) {
-        tbGroupService.removeById(tbGroup.getGroupId());
+    public Result deleteGroup(Long id) {
+        tbGroupService.removeById(id);
         return Result.success(null, "删除成功");
     }
 
@@ -42,6 +42,11 @@ public class TbGroupController {
     public Result getGroup(@RequestBody Long groupId) {
         tbGroupService.getById(groupId);
         return Result.success(tbGroupService.getById(groupId), "查询成功");
+    }
+
+    @GetMapping("/list")
+    public Result listGroup() {
+        return Result.success(tbGroupService.list(), null);
     }
 
 }

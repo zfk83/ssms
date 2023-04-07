@@ -1,36 +1,36 @@
-function getProducts() {
+function getGroups() {
     return request({
-        url: '/product/list',
+        url: '/group/list',
         method: 'get'
     });
 }
 
-function addProduct(data) {
+function addGroup(data) {
     return request({
-        url: '/product/add',
+        url: '/group/add',
         method: 'post',
         data: data
     });
 }
 
-function updateProduct(data) {
+function updateGroup(data) {
     return request({
-        url: '/product/update',
+        url: '/group/update',
         method: 'put',
         data: data
     });
 }
 
-function deleteProduct(id) {
+function deleteGroup(id) {
     return request({
-        url: '/product/delete?id=' + id,
+        url: '/group/delete?id=' + id,
         method: 'delete'
     });
 }
 
-function getProduct(id) {
+function getGroup(id) {
     return request({
-        url: '/product/get/' + id,
+        url: '/group/get/' + id,
         method: 'get'
     });
 }

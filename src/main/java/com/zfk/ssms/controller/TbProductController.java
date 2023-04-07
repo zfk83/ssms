@@ -26,8 +26,8 @@ public class TbProductController {
     }
 
     @DeleteMapping ("/delete")
-    public Result deleteProduct(@RequestBody TbProduct tbProduct) {
-        tbProductService.removeById(tbProduct.getProductId());
+    public Result deleteProduct(Long id) {
+        tbProductService.removeById(id);
         return Result.success(null, "删除成功");
     }
 
@@ -42,8 +42,11 @@ public class TbProductController {
         tbProductService.getById(groupId);
         return Result.success(tbProductService.getById(groupId), "查询成功");
     }
+
     @GetMapping("/list")
     public Result listProduct() {
         return Result.success(tbProductService.getProductList(), null);
     }
+
+
 }

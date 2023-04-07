@@ -4,7 +4,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zfk.ssms.domain.TbGroup;
 import com.zfk.ssms.service.TbGroupService;
 import com.zfk.ssms.mapper.TbGroupMapper;
+import com.zfk.ssms.service.TbProductService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author ZFK
@@ -14,6 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TbGroupServiceImpl extends ServiceImpl<TbGroupMapper, TbGroup>
     implements TbGroupService{
+
+
 
 }
 

@@ -63,7 +63,7 @@ public class TbProduct implements Serializable {
     private Date yieldTime;
 
     /**
-     * 
+     * 图片
      */
     private String photo;
 
