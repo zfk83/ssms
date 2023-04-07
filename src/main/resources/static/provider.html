@@ -8,6 +8,7 @@
 </head>
 <body>
     <div id="app">
+        <div style="padding: 20px;">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
             <el-breadcrumb-item><a href="/">商品管理</a></el-breadcrumb-item>
@@ -16,6 +17,7 @@
         <div class="title">
             <span>供应商详情</span>
         </div>
+
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="联系电话：">
                 <el-input v-model="formInline.region" placeholder="请输入联系电话"></el-input>
@@ -23,26 +25,6 @@
             <el-form-item style="margin-left: 20px">
                 <el-button  type="success" icon="el-icon-search" @click="onSubmit">开始查找</el-button>
                 <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增供应商</el-button>
-                <el-dialog title="新增供应商" :visible.sync="dialogFormVisible" >
-                    <el-form :model="form">
-                        <el-form-item label="供应商编号" :label-width="formLabelWidth">
-                            <el-input v-model="form.providerId" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="供应商名称" :label-width="formLabelWidth">
-                            <el-input v-model="form.providerName" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="供应商地址" :label-width="formLabelWidth">
-                            <el-input v-model="form.providerAddress" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="联系电话" :label-width="formLabelWidth">
-                            <el-input v-model="form.contactPhone" autocomplete="off"></el-input>
-                        </el-form-item>
-                    </el-form>
-                    <div slot="footer" class="dialog-footer">
-                        <el-button @click="dialogFormVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-                    </div>
-                </el-dialog>
             </el-form-item>
         </el-form>
 
@@ -71,6 +53,28 @@
                 </el-pagination>
             </el-col>
         </el-row>
+    </div>
+
+        <el-dialog title="新增供应商" :visible.sync="dialogFormVisible" >
+            <el-form :model="form">
+                <el-form-item label="供应商编号" :label-width="formLabelWidth">
+                    <el-input v-model="form.providerId" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="供应商名称" :label-width="formLabelWidth">
+                    <el-input v-model="form.providerName" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="供应商地址" :label-width="formLabelWidth">
+                    <el-input v-model="form.providerAddress" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="联系电话" :label-width="formLabelWidth">
+                    <el-input v-model="form.contactPhone" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 
 </body>

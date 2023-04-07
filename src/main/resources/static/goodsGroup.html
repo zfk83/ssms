@@ -8,6 +8,7 @@
 </head>
 <body>
     <div id="app">
+        <div style="padding: 20px;">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
             <el-breadcrumb-item><a href="/">商品管理</a></el-breadcrumb-item>
@@ -18,24 +19,6 @@
         </div>
 
         <el-button style="margin-top: 30px" type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增商品分类</el-button>
-        <el-dialog title="新增商品分类" :visible.sync="dialogFormVisible" >
-            <el-form :model="form">
-                <el-form-item label="商品编号" :label-width="formLabelWidth">
-                    <el-input v-model="form.productId" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="分类" :label-width="formLabelWidth">
-                    <el-input v-model="form.group" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="图片" :label-width="formLabelWidth">
-                    <el-input v-model="form.photo" autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-            </div>
-        </el-dialog>
-
         <el-table :data="products" :border="true" class="table">
             <el-table-column prop="productId" label="商品编号"></el-table-column>
             <el-table-column prop="group" label="分类"></el-table-column>
@@ -63,6 +46,25 @@
                 </el-pagination>
             </el-col>
         </el-row>
+    </div>
+
+        <el-dialog title="新增商品分类" :visible.sync="dialogFormVisible" >
+            <el-form :model="form">
+                <el-form-item label="商品编号" :label-width="formLabelWidth">
+                    <el-input v-model="form.productId" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="分类" :label-width="formLabelWidth">
+                    <el-input v-model="form.group" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片" :label-width="formLabelWidth">
+                    <el-input v-model="form.photo" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 
 </body>
@@ -154,6 +156,7 @@
         font-size: 25px;
         margin-top: 50px;
     }
+
 
 </style>
 </html>

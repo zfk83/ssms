@@ -8,6 +8,7 @@
 </head>
 <body>
 <div id="app">
+    <div style="padding: 20px;">
     <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
         <el-breadcrumb-item><a href="/">商品管理</a></el-breadcrumb-item>
@@ -16,6 +17,7 @@
     <div class="title">
         <span>商品进货管理</span>
     </div>
+
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="采购编号：">
             <el-input v-model="formInline.purchaseId" placeholder="请输入采购编号"></el-input>
@@ -30,32 +32,7 @@
         <el-form-item>
             <el-button  type="success" icon="el-icon-search" @click="onSubmit">开始查找</el-button>
             <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增采购订单</el-button>
-            <el-dialog title="新增采购订单" :visible.sync="dialogFormVisible" >
-                <el-form :model="form">
-                    <el-form-item label="采购编号" :label-width="formLabelWidth">
-                        <el-input v-model="form.purchaseId" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="商品编号" :label-width="formLabelWidth">
-                        <el-input v-model="form.productId" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="供应商编号" :label-width="formLabelWidth">
-                        <el-input v-model="form.providerId" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="进货价格" :label-width="formLabelWidth">
-                        <el-input v-model="form.purchasePrice " autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="采购数量" :label-width="formLabelWidth">
-                        <el-input v-model="form.purchaseCount" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="采购时间" :label-width="formLabelWidth">
-                        <el-input v-model="form.purchaseTime" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-form>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-                </div>
-            </el-dialog>
+
         </el-form-item>
     </el-form>
 
@@ -88,6 +65,33 @@
     </el-row>
 </div>
 
+    <el-dialog title="新增采购订单" :visible.sync="dialogFormVisible" >
+        <el-form :model="form">
+            <el-form-item label="采购编号" :label-width="formLabelWidth">
+                <el-input v-model="form.purchaseId" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="商品编号" :label-width="formLabelWidth">
+                <el-input v-model="form.productId" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="供应商编号" :label-width="formLabelWidth">
+                <el-input v-model="form.providerId" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="进货价格" :label-width="formLabelWidth">
+                <el-input v-model="form.purchasePrice " autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="采购数量" :label-width="formLabelWidth">
+                <el-input v-model="form.purchaseCount" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="采购时间" :label-width="formLabelWidth">
+                <el-input v-model="form.purchaseTime" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </div>
+    </el-dialog>
+    </div>
 </body>
 
 <script src="./vue/vue.js"></script>

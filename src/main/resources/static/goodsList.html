@@ -8,95 +8,98 @@
 </head>
 <body>
     <div id="app">
-        <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="/">商品管理</a></el-breadcrumb-item>
-            <el-breadcrumb-item>商品信息维护</el-breadcrumb-item>
-        </el-breadcrumb>
-        <div class="title">
-        <span>商品信息维护</span>
-        </div>
+        <div style="padding: 20px;">
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item><a href="/">商品管理</a></el-breadcrumb-item>
+                <el-breadcrumb-item>商品信息维护</el-breadcrumb-item>
+            </el-breadcrumb>
+            <div class="title">
+                <span>商品信息维护</span>
+            </div>
 
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
-            <el-form-item label="商品编号：">
-                <el-input v-model="formInline.productId" placeholder="请输入商品编号"></el-input>
-            </el-form-item>
-            <el-form-item label="商品名称：">
-                <el-input v-model="formInline.productName" placeholder="请输入商品名称"></el-input>
-            </el-form-item>
-            <el-form-item label="商品类别：">
-                <el-input v-model="formInline.group" placeholder="请输入商品类别"></el-input>
-            </el-form-item>
-            <el-form-item style="margin-left: 20px">
-                <el-button  type="success" icon="el-icon-search" @click="onSearch">开始查找</el-button>
-                <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增商品</el-button>
-                <el-dialog title="新增商品" :visible.sync="dialogFormVisible" >
-                    <el-form :model="form">
-                        <el-form-item label="商品编号" :label-width="formLabelWidth">
-                            <el-input v-model="form.productId" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="商品名称" :label-width="formLabelWidth">
-                            <el-input v-model="form.productName" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="分类" :label-width="formLabelWidth">
-                            <el-input v-model="form.group" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="图片" :label-width="formLabelWidth">
-                            <el-input v-model="form.photo" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="生产日期" :label-width="formLabelWidth">
-                            <el-input v-model="form.yieldTime" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="价格" :label-width="formLabelWidth">
-                            <el-input v-model="form.salePrice" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="售出数" :label-width="formLabelWidth">
-                            <el-input v-model="form.saleCount" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="库存数" :label-width="formLabelWidth">
-                            <el-input v-model="form.stock" autocomplete="off"></el-input>
-                        </el-form-item>
-                    </el-form>
-                    <div slot="footer" class="dialog-footer">
-                        <el-button @click="dialogFormVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-                    </div>
-                </el-dialog>
-            </el-form-item>
-        </el-form>
+            <el-form :inline="true" :model="formInline" class="demo-form-inline">
+                <el-form-item label="商品编号：">
+                    <el-input v-model="formInline.productId" placeholder="请输入商品编号"></el-input>
+                </el-form-item>
+                <el-form-item label="商品名称：">
+                    <el-input v-model="formInline.productName" placeholder="请输入商品名称"></el-input>
+                </el-form-item>
+                <el-form-item label="商品类别：">
+                    <el-input v-model="formInline.group" placeholder="请输入商品类别"></el-input>
+                </el-form-item>
+                <el-form-item style="margin-left: 20px">
+                    <el-button  type="success" icon="el-icon-search" @click="onSearch">开始查找</el-button>
+                    <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增商品</el-button>
+                </el-form-item>
+            </el-form>
 
             <el-table :data="products" :border="true" class="table">
-            <el-table-column prop="productId" label="商品编号"></el-table-column>
-            <el-table-column prop="productName" label="商品名称"></el-table-column>
-            <el-table-column prop="group" label="分类"></el-table-column>
-            <el-table-column prop="photo" label="图片">
-                <template slot-scope="scope">
-                    <img :src="scope.row.photo" width="80px" height="80px"/>
-                </template>
-            </el-table-column>
-            <el-table-column prop="provider" label="供应商"></el-table-column>
-            <el-table-column prop="yieldTime" label="生产日期"></el-table-column>
-            <el-table-column prop="salePrice" label="价格"></el-table-column>
-            <el-table-column prop="saleCount" label="售出数"></el-table-column>
-            <el-table-column prop="stock" label="库存数"></el-table-column>
-            <el-table-column prop="operation" label="操作" width="300px">
+                <el-table-column prop="productId" label="商品编号"></el-table-column>
+                <el-table-column prop="productName" label="商品名称"></el-table-column>
+                <el-table-column prop="group" label="分类"></el-table-column>
+                <el-table-column prop="photo" label="图片">
+                    <template slot-scope="scope">
+                        <img :src="scope.row.photo" width="80px" height="80px"/>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="provider" label="供应商"></el-table-column>
+                <el-table-column prop="yieldTime" label="生产日期"></el-table-column>
+                <el-table-column prop="salePrice" label="价格"></el-table-column>
+                <el-table-column prop="saleCount" label="售出数"></el-table-column>
+                <el-table-column prop="stock" label="库存数"></el-table-column>
+                <el-table-column prop="operation" label="操作" width="300px">
                     <template slot-scope="scope">
                         <el-button type="primary" icon="el-icon-edit" @click="handleClick(scope.row)">修改</el-button>
                         <el-button type="danger" icon="el-icon-delete" @click="handleClick(scope.row)">删除</el-button>
                     </template>
-            </el-table-column>
-        </el-table>
-        <el-row>
-            <el-col :span="24" style="text-align: right;margin-top:30px;">
-                <el-pagination
-                        :page-size="5"
-                        :page-count="6"
-                        background
-                        layout="prev, pager, next"
-                        :total="43">
-                </el-pagination>
-            </el-col>
-        </el-row>
+                </el-table-column>
+            </el-table>
+            <el-row>
+                <el-col :span="24" style="text-align: right;margin-top:30px;">
+                    <el-pagination
+                            :page-size="5"
+                            :page-count="6"
+                            background
+                            layout="prev, pager, next"
+                            :total="43">
+                    </el-pagination>
+                </el-col>
+            </el-row>
+        </div>
+
+        <el-dialog title="新增商品" :visible.sync="dialogFormVisible" >
+            <el-form :model="form">
+                <el-form-item label="商品编号" :label-width="formLabelWidth">
+                    <el-input v-model="form.productId" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="商品名称" :label-width="formLabelWidth">
+                    <el-input v-model="form.productName" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="分类" :label-width="formLabelWidth">
+                    <el-input v-model="form.group" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片" :label-width="formLabelWidth">
+                    <el-input v-model="form.photo" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="生产日期" :label-width="formLabelWidth">
+                    <el-input v-model="form.yieldTime" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="价格" :label-width="formLabelWidth">
+                    <el-input v-model="form.salePrice" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="售出数" :label-width="formLabelWidth">
+                    <el-input v-model="form.saleCount" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="库存数" :label-width="formLabelWidth">
+                    <el-input v-model="form.stock" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </body>
 
