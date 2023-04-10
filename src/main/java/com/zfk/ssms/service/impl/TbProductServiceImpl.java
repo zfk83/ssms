@@ -1,8 +1,10 @@
 package com.zfk.ssms.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zfk.ssms.domain.TbGroup;
 import com.zfk.ssms.domain.TbProduct;
+import com.zfk.ssms.domain.TbProvider;
 import com.zfk.ssms.dto.ProductDTO;
 import com.zfk.ssms.service.TbGroupService;
 import com.zfk.ssms.service.TbProductService;
@@ -36,11 +38,29 @@ public class TbProductServiceImpl extends ServiceImpl<TbProductMapper, TbProduct
         List<ProductDTO> result = list.stream().map(tbProduct -> {
             ProductDTO productDTO = new ProductDTO();
             BeanUtils.copyProperties(tbProduct, productDTO);
-            productDTO.setProvider(tbProviderService.getById(tbProduct.getProviderId()).getProviderName());
-            productDTO.setGroup(tbGroupService.getById(tbProduct.getGroupId()).getGroupName());
+            TbProvider tbProvider = tbProviderService.getById(tbProduct.getProviderId());
+            if(tbProvider != null){
+                productDTO.setProvider(tbProvider.getProviderName());
+            }
+            TbGroup tbGroup = tbGroupService.getById(tbProduct.getGroupId());
+            if(tbGroup != null){
+                productDTO.setGroup(tbGroup.getGroupName());
+            }
             return productDTO;
         }).collect(Collectors.toList());
         return result;
+    }
+
+    @Override
+    public boolean saveProduct(ProductDTO productDTO) {
+        TbProduct tbProduct = new TbProduct();
+        BeanUtils.copyProperties(productDTO, tbProduct);
+        LambdaQueryWrapper<TbProvider> providerLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        TbProvider tbProvider = tbProviderService.getOne(providerLambdaQueryWrapper.eq(TbProvider::getProviderName, productDTO.getProvider()));
+        if(tbProvider != null) {
+            tbProduct.setProviderId(tbProvider.getProviderId());
+        }
+        return this.save(tbProduct);
     }
 }
 

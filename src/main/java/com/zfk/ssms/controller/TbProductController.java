@@ -2,6 +2,7 @@ package com.zfk.ssms.controller;
 
 import com.zfk.ssms.common.Result;
 import com.zfk.ssms.domain.TbProduct;
+import com.zfk.ssms.dto.ProductDTO;
 import com.zfk.ssms.service.TbProductService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,9 @@ public class TbProductController {
     private TbProductService tbProductService;
 
     @PostMapping ("/add")
-    public Result addProduct(@RequestBody TbProduct tbProduct) {
-        tbProductService.save(tbProduct);
-        return Result.success(null, "添加成功");
+    public Result addProduct(@RequestBody ProductDTO productDTO) {
+        boolean success = tbProductService.saveProduct(productDTO);
+        return success ? Result.success(null, "添加成功") : Result.fail(null, "添加失败");
     }
 
     @DeleteMapping ("/delete")

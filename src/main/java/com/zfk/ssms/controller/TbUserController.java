@@ -23,13 +23,13 @@ public class TbUserController {
 
     @PostMapping("/add")
     public Result addUser(@RequestBody TbUser tbUser) {
-        tbUserService.save(tbUser);
-        return Result.success(null, "添加成功");
+        boolean success = tbUserService.save(tbUser);
+        return success ? Result.success(null, "添加成功") : Result.fail(null, "添加失败");
     }
 
     @DeleteMapping("/delete")
-    public Result deleteUser(@RequestBody TbUser tbUser) {
-        tbUserService.removeById(tbUser.getUserId());
+    public Result deleteUser(Long id) {
+        tbUserService.removeById(id);
         return Result.success(null, "删除成功");
     }
 
@@ -43,6 +43,11 @@ public class TbUserController {
     public Result getUser(@RequestBody Long userId) {
         tbUserService.getById(userId);
         return Result.success(tbUserService.getById(userId), "查询成功");
+    }
+
+    @GetMapping("/list")
+    public Result listUser() {
+        return Result.success(tbUserService.list(), null);
     }
 
     @PostMapping("/login")

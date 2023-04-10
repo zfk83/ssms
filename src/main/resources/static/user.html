@@ -19,15 +19,15 @@
         </div>
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="用户姓名：">
-                <el-input v-model="formInline.region" placeholder="请输入用户姓名"></el-input>
+                <el-input v-model="formInline.userName" placeholder="请输入用户姓名"></el-input>
             </el-form-item>
             <el-form-item style="margin-left: 20px">
-                <el-button  type="success" icon="el-icon-search" @click="onSubmit">开始查找</el-button>
+                <el-button  type="success" icon="el-icon-search">开始查找</el-button>
                 <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增用户</el-button>
             </el-form-item>
         </el-form>
 
-        <el-table :data="products" :border="true" class="table" >
+        <el-table :data="users" :border="true" class="table" >
             <el-table-column prop="userId" label="用户编号"></el-table-column>
             <el-table-column prop="userName" label="用户姓名"></el-table-column>
             <el-table-column prop="password" label="密码"></el-table-column>
@@ -37,6 +37,7 @@
                 <template slot-scope="scope">
                     <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="handleClick(scope.row)">修改信息</el-button>
                     <el-button type="info" style="width: 120px" icon="el-icon-edit" @click="handleClick(scope.row)">修改密码</el-button>
+                    <el-button type="danger" style="width: 120px" icon="el-icon-delete" @click="cancelUser(scope.row)">删除用户</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -73,7 +74,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button type="primary" @click="handleUserAdd">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -83,6 +84,8 @@
 <!-- 引入组件库 -->
 <script src="./element-ui/index.js"></script>
 <script src="./axios/axios.min.js"></script>
+<script src="./utils/request.js"></script>
+<script src="api/user.js"></script>
 
 <script>
     new Vue({
@@ -93,63 +96,8 @@
                 formInline: {
                     userName: '',
                 },
-                products: [
-                    {
-                        userId: 1,
-                        userName: '蔡徐坤',
-                        password:'123456',
-                        phoneNumber: '12345678901',
-                        sex: '男',
-                    },
-                    {
-                        userId: 2,
-                        userName: '蔡徐坤',
-                        password:'123456',
-                        phoneNumber: '12345678901',
-                        sex: '男',
-                    },
-                    {
-                        userId: 3,
-                        userName: '蔡徐坤',
-                        password:'123456',
-                        phoneNumber: '12345678901',
-                        sex: '男',
-                    },
-                    {
-                        userId: 4,
-                        userName: '蔡徐坤',
-                        password:'123456',
-                        phoneNumber: '12345678901',
-                        sex: '男',
-                    },
-                    {
-                        userId: 5,
-                        userName: '蔡徐坤',
-                        password:'123456',
-                        phoneNumber: '12345678901',
-                        sex: '男',
-                    },
-                    {
-                        userId: 6,
-                        userName: '蔡徐坤',
-                        password:'123456',
-                        phoneNumber: '12345678901',
-                        sex: '男',
-                    },
-                    {
-                        userId: 7,
-                        userName: '蔡徐坤',
-                        password:'123456',
-                        phoneNumber: '12345678901',
-                        sex: '男',
-                    },
-                    {
-                        userId: 8,
-                        userName: '蔡徐坤',
-                        password:'123456',
-                        phoneNumber: '12345678901',
-                        sex: '男',
-                    },
+                users: [
+
                 ],
                 dialogFormVisible: false,
                 form: {
@@ -158,27 +106,41 @@
                     password: '',
                     phoneNumber: '',
                     sex: '',
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
                 },
                 formLabelWidth: '120px'
             }
         },
         methods:{
-            onClear() {
-                this.keyword = "";
+            getUsers(){
+                getUsers().then(response => {
+                    this.users = response.data;
+                })
             },
-            plus(){
 
+            cancelUser(row){
+                this.$confirm('确认删除该用户吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deleteUser(row.userId).then(response => {
+                        this.getUsers();
+                    })
+                }).catch(() => {
+                    // 取消删除操作
+                    this.$message.info('已取消删除')
+                })
             },
-            onSubmit(){
-                alert("开始查找");
+
+            handleUserAdd(){
+                addUser(this.form).then(response => {
+                    this.getUsers();
+                    this.dialogFormVisible = false;
+                })
             },
-            add(){
-                alert("新增用户");
-            }
+        },
+        mounted(){
+            this.getUsers();
         }
     });
 </script>

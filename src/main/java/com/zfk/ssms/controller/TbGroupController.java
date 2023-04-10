@@ -22,8 +22,8 @@ public class TbGroupController {
 
     @PostMapping("/add")
     public Result addGroup(@RequestBody TbGroup tbGroup) {
-        tbGroupService.save(tbGroup);
-        return Result.success(null, "添加成功");
+        boolean success = tbGroupService.save(tbGroup);
+        return success ? Result.success(null, "添加成功") : Result.fail(null, "添加失败");
     }
 
     @DeleteMapping("/delete")

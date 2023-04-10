@@ -20,7 +20,7 @@
 
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="联系电话：">
-                <el-input v-model="formInline.region" placeholder="请输入联系电话"></el-input>
+                <el-input v-model="formInline.contactPhone" placeholder="请输入联系电话"></el-input>
             </el-form-item>
             <el-form-item style="margin-left: 20px">
                 <el-button  type="success" icon="el-icon-search" >开始查找</el-button>
@@ -72,7 +72,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button type="primary" @click="handleProviderAdd">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -128,6 +128,12 @@
                 }).catch(() => {
                     // 取消删除操作
                     this.$message.info('已取消删除')
+                })
+            },
+            handleProviderAdd(){
+                addProvider(this.form).then(response => {
+                    this.getProviders();
+                    this.dialogFormVisible = false;
                 })
             },
         },

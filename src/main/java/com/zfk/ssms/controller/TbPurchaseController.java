@@ -21,8 +21,8 @@ public class TbPurchaseController {
 
     @PostMapping("/add")
     public Result addPurchase(@RequestBody TbPurchase tbPurchase) {
-        tbPurchaseService.save(tbPurchase);
-        return Result.success(null, "添加成功");
+        boolean success = tbPurchaseService.save(tbPurchase);
+        return success ? Result.success(null, "添加成功") : Result.fail(null, "添加失败");
     }
 
     @DeleteMapping("/delete")

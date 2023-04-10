@@ -64,7 +64,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            <el-button type="primary" @click="handleGroupAdd">确 定</el-button>
         </div>
     </el-dialog>
 </div>
@@ -82,12 +82,6 @@
         el: '#app',
         data() {
             return {
-                input: "",
-                formInline: {
-                    groupId: '',
-                    groupName: '',
-                    groupPhoto: '',
-                },
                 groups: [
 
                 ],
@@ -97,7 +91,7 @@
                     groupName: '',
                     groupPhoto: '',
                 },
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
             }
         },
         methods: {
@@ -106,6 +100,7 @@
                     this.groups = response.data;
                 })
             },
+
             cancelGroup(row) {
                 this.$confirm('确认删除该分类吗？', '提示', {
                     confirmButtonText: '确定',
@@ -118,6 +113,12 @@
                 }).catch(() => {
                     // 取消删除操作
                     this.$message.info('已取消删除')
+                })
+            },
+            handleGroupAdd(){
+                addGroup(this.form).then(response => {
+                    this.getGroups();
+                    this.dialogFormVisible = false;
                 })
             },
         },

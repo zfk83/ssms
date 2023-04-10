@@ -21,8 +21,8 @@ public class  TbProviderController {
 
     @PostMapping("/add")
     public Result addProvider(@RequestBody TbProvider tbProvider) {
-        tbProviderService.save(tbProvider);
-        return Result.success(null, "添加成功");
+        boolean success = tbProviderService.save(tbProvider);
+        return success ? Result.success(null, "添加成功") : Result.fail(null, "添加失败");
     }
 
     @DeleteMapping("/delete")
