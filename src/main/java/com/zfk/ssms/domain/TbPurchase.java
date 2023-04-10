@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Data;
 
@@ -40,6 +41,11 @@ public class TbPurchase implements Serializable {
      * 采购数量
      */
     private Integer purchaseCount;
+
+    /**
+     * 进货价格
+     */
+    private BigDecimal purchasePrice;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

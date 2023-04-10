@@ -26,8 +26,8 @@ public class TbPurchaseController {
     }
 
     @DeleteMapping("/delete")
-    public Result deletePurchase(@RequestBody TbPurchase tbPurchase) {
-        tbPurchaseService.removeById(tbPurchase.getPurchaseId());
+    public Result deletePurchase(Long id) {
+        tbPurchaseService.removeById(id);
         return Result.success(null, "删除成功");
     }
 
@@ -41,5 +41,10 @@ public class TbPurchaseController {
     public Result getGroup(@RequestBody Long groupId) {
         tbPurchaseService.getById(groupId);
         return Result.success(tbPurchaseService.getById(groupId), "查询成功");
+    }
+
+    @GetMapping("/list")
+    public Result listPurchase() {
+        return Result.success(tbPurchaseService.list(), null);
     }
 }

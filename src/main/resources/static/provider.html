@@ -23,7 +23,7 @@
                 <el-input v-model="formInline.region" placeholder="请输入联系电话"></el-input>
             </el-form-item>
             <el-form-item style="margin-left: 20px">
-                <el-button  type="success" icon="el-icon-search" @click="onSubmit">开始查找</el-button>
+                <el-button  type="success" icon="el-icon-search" >开始查找</el-button>
                 <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增供应商</el-button>
             </el-form-item>
         </el-form>
@@ -111,9 +111,6 @@
             }
         },
         methods:{
-            onSubmit(){
-                console.log('submit!');
-            },
             getProviders() {
                 getProviders().then(response => {
                     this.providers = response.data;

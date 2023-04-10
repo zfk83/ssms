@@ -30,13 +30,13 @@
         </el-form-item>
 
         <el-form-item>
-            <el-button  type="success" icon="el-icon-search" @click="onSubmit">开始查找</el-button>
+            <el-button  type="success" icon="el-icon-search" >开始查找</el-button>
             <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增采购订单</el-button>
 
         </el-form-item>
     </el-form>
 
-    <el-table :data="products" :border="true" class="table" >
+    <el-table :data="purchases" :border="true" class="table" >
         <el-table-column prop="purchaseId" label="采购编号"></el-table-column>
         <el-table-column prop="productId" label="商品编号"></el-table-column>
         <el-table-column prop="providerId" label="供应商编号"></el-table-column>
@@ -47,7 +47,7 @@
             <template slot-scope="scope">
                 <el-button type="info" style="width: 120px" icon="el-icon-document" @click="handleClick(scope.row)">采购信息</el-button>
                 <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="handleClick(scope.row)">修改</el-button>
-                <el-button type="danger" style="width: 120px" icon="el-icon-delete" @click="handleClick(scope.row)">删除</el-button>
+                <el-button type="danger" style="width: 120px" icon="el-icon-delete" @click="cancelPurchase(scope.row)">删除</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -98,6 +98,8 @@
 <!-- 引入组件库 -->
 <script src="./element-ui/index.js"></script>
 <script src="./axios/axios.min.js"></script>
+<script src="./utils/request.js"></script>
+<script src="api/purchase.js"></script>
 
 <script>
     new Vue({
@@ -115,63 +117,8 @@
 
 
                 },
-                products: [
-                    {
-                        purchaseId: 1,
-                        productId: 1,
-                        providerId: 1,
-                        purchasePrice: 50,
-                        purchaseCount: 100,
-                        purchaseTime: '2020-01-01 12:00',
-                    },
-                    {
-                        purchaseId: 2,
-                        productId: 2,
-                        providerId: 2,
-                        purchasePrice: 50,
-                        purchaseCount: 100,
-                        purchaseTime: '2020-01-01 12:00',
-                    },
-                    {
-                        purchaseId: 3,
-                        productId: 3,
-                        providerId: 3,
-                        purchasePrice: 50,
-                        purchaseCount: 100,
-                        purchaseTime: '2020-01-01 12:00',
-                    },
-                    {
-                        purchaseId: 4,
-                        productId: 4,
-                        providerId: 4,
-                        purchasePrice: 50,
-                        purchaseCount: 100,
-                        purchaseTime: '2020-01-01 12:00',
-                    },
-                    {
-                        purchaseId: 5,
-                        productId: 5,
-                        providerId: 5,
-                        purchasePrice: 50,
-                        purchaseCount: 100,
-                        purchaseTime: '2020-01-01 12:00',
-                    },
-                    {
-                        purchaseId: 6,
-                        productId: 6,
-                        providerId: 6,
-                        purchasePrice: 50,
-                        purchaseCount: 100,
-                        purchaseTime: '2020-01-01 12:00',
-                    },
-                    {
-                        purchaseId: 7,
-                        productId: 7,
-                        providerId: 7,
-                        purchasePrice: 50,
-                        purchaseCount: 100,
-                        purchaseTime: '2020-01-01 12:00',
-                    },
+                purchases: [
+
                 ],
                 dialogFormVisible: false,
                 form: {
@@ -190,19 +137,31 @@
             }
         },
         methods:{
-            onClear() {
-                this.keyword = "";
-            },
-            plus(){
 
+            getPurchases(){
+                getPurchases().then(response => {
+                    this.purchases = response.data;
+                })
             },
-            onsubmit(){
 
+            cancelPurchase(row){
+                this.$confirm('确认删除该采购订单吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deletePurchase(row.purchaseId).then(response => {
+                        this.getPurchases();
+                    })
+                }).catch(() => {
+                    // 取消删除操作
+                    this.$message.info('已取消删除')
+                })
             },
-            add(){
-                window.location.href = "addPurchase.html";
-            }
-        }
+        },
+        mounted(){
+            this.getPurchases();
+        },
     });
 </script>
 <style lang="less">
