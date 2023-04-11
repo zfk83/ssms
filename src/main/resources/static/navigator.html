@@ -35,42 +35,24 @@
                 <el-menu
                          background-color="#545c64"
                          text-color="#fff"
-                         default-active="1"
-                         active-text-color="#ffd04b">
-
-                    <el-menu-item index="1" @click="changeMain('/dashboard.html')">
-                        <template slot="title"><i class="el-icon-menu" ></i>dashboard</template>
+                         :default-active="defaultActive"
+                         active-text-color="#ffd04b"
+                >
+                    <el-menu-item v-for="item in menuList" :index="item.index" @click="changeMain(item.path,item.index)" v-if="item.dashboard">
+                        <template slot="title"><i :class="item.icon" ></i>{{item.name}}</template>
                     </el-menu-item>
-                    <el-submenu index="2">
-                        <template slot="title"><i class="el-icon-goods"></i>商品管理</template>
-                            <el-menu-item index="1-1" @click="changeMain('/goodsList.html')">商品信息维护</el-menu-item>
-                            <el-menu-item index="1-2" @click="changeMain('/goodsGroup.html')">商品分类管理</el-menu-item>
-                            <el-menu-item index="1-3" @click="changeMain('/provider.html')">供应商管理</el-menu-item>
-                            <el-menu-item index="1-4" @click="changeMain('/purchase.html')">商品进货管理</el-menu-item>
+                    <el-submenu v-for="item in menuList" :index="item.index" v-if="!item.dashboard">
+                        <template slot="title"><i :class="item.icon"></i>{{item.name}}</template>
+                        <el-menu-item v-for="subItem in item.children" :index="subItem.index" @click="changeMain(subItem.path,subItem.index)">{{subItem.name}}</el-menu-item>
                     </el-submenu>
-
-                    <el-submenu index="3">
-                        <template slot="title"><i class="el-icon-s-order"></i>订单管理</template>
-                            <el-menu-item index="2-1" @click="changeMain('/order.html')">订单查询</el-menu-item>
-                            <el-menu-item index="2-2" @click="changeMain('/shipped.html')">发货管理</el-menu-item>
-                            <el-menu-item index="2-3" @click="changeMain('/returnGoods.html')">退货管理</el-menu-item>
-                    </el-submenu>
-
-                    <el-submenu index="4">
-                        <template slot="title"><i class="el-icon-user"></i>用户管理</template>
-                            <el-menu-item index="3-1" @click="changeMain('/user.html')">用户信息管理</el-menu-item> 
-                    </el-submenu>
-
-                    <el-submenu index="5">
-                        <template slot="title"><i class="el-icon-sell"></i>销售统计</template>
-                            <el-menu-item index="3-1" @click="changeMain('/productSales.html')">商品销售统计</el-menu-item>
-                            <el-menu-item index="3-2" @click="changeMain('/periodicSales.html')">时段销售统计</el-menu-item>
-                            <el-menu-item index="3-3" @click="changeMain('/customerSpending.html')">顾客消费统计</el-menu-item>
-                    </el-submenu>
-
                 </el-menu>
             </el-aside>
             <el-main>
+                <el-breadcrumb separator="/" style="margin-top: 20px;margin-left:20px;" v-for="(item,index) in menuList" v-if="showBreadCrumb(item)">
+                    <el-breadcrumb-item v-if="!item.dashboard"><a @click="changeMain('/dashboard.html','1')">主页</a></el-breadcrumb-item>
+                    <el-breadcrumb-item v-if="!item.dashboard"><a @click="changeMain(item.children[0].path,item.children[0].index)">{{item.name}}</a></el-breadcrumb-item>
+                    <el-breadcrumb-item v-if="!item.dashboard">{{getCurrentName(item)}}</el-breadcrumb-item>
+                </el-breadcrumb>
                 <iframe ref="frame" :src="mainHtml" frameborder="0" width="100%" height="100%"></iframe>
             </el-main>
         </el-container>
@@ -88,12 +70,110 @@
         el:'#app',
         data(){
             return {
-                mainHtml: '/dashboard.html'
+                mainHtml: '/dashboard.html',
+                defaultActive: '1',
+                menuList:[
+                    {
+                        index: '1',
+                        name: 'dashboard',
+                        path: '/dashboard.html',
+                        icon: 'el-icon-menu',
+                        dashboard: true
+                    },
+                    {
+                        index: '2',
+                        name: '商品管理',
+                        icon: 'el-icon-goods',
+                        children: [
+                            {
+                                index: '2-1',
+                                name: '商品信息维护',
+                                path: '/goodsList.html'
+                            },
+                            {
+                                index: '2-2',
+                                name: '商品分类管理',
+                                path: '/goodsGroup.html'
+                            },
+                            {
+                                index: '2-3',
+                                name: '供应商管理',
+                                path: '/provider.html'
+                            },
+                            {
+                                index: '2-4',
+                                name: '商品进货管理',
+                                path: '/purchase.html'
+                            }
+                        ]
+                    },
+                    {
+                        index: '3',
+                        name: '订单管理',
+                        icon: 'el-icon-s-order',
+                        children: [
+                            {
+                                index: '3-1',
+                                name: '订单查询',
+                                path: '/order.html'
+                            },
+                            {
+                                index: '3-2',
+                                name: '发货管理',
+                                path: '/shipped.html'
+                            },
+                            {
+                                index: '3-3',
+                                name: '退货管理',
+                                path: '/returnGoods.html'
+                            }
+                        ]
+                    },
+                    {
+                        index: '4',
+                        name: '用户管理',
+                        icon: 'el-icon-user',
+                        children: [
+                            {
+                                index: '4-1',
+                                name: '用户信息管理',
+                                path: '/user.html'
+                            }
+                        ]
+                    },
+                    {
+                        index: '5',
+                        name: '销售统计',
+                        icon: 'el-icon-sell',
+                        children: [
+                            {
+                                index: '5-1',
+                                name: '商品销售统计',
+                                path: '/productSales.html'
+                            },
+                            {
+                                index: '5-2',
+                                name: '时段销售统计',
+                                path: '/periodicSales.html'
+                            },
+                            {
+                                index: '5-3',
+                                name: '顾客消费统计',
+                                path: '/customerSpending.html'
+                            }
+                        ]
+                    }
+                ]
             }
         },
         methods:{
             changeMain(url){
                 this.mainHtml = url;
+            },
+            changeMain(url,index){
+                this.mainHtml = url;
+                console.log(index);
+                this.defaultActive = index;
             },
             add(){
                 this.$message({
@@ -106,7 +186,26 @@
                     message: '提交成功',
                     type: 'success'
                 });
-            }
+            },
+            showBreadCrumb(item){
+                if(item.dashboard){
+                    return true;
+                }
+                for(let i = 0;i < item.children.length;i++){
+                    if(item.children[i].path == this.mainHtml){
+                        return true;
+                    }
+                }
+                return false;
+            },
+            getCurrentName(item){
+                for(let i = 0;i < item.children.length;i++){
+                    if(item.children[i].path == this.mainHtml){
+                        return item.children[i].name;
+                    }
+                }
+            },
+
         },
         created(){
             if(localStorage.getItem('loginMessage') != null){
