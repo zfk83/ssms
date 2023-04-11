@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @Api
 @RestController
 @RequestMapping("/group")
-@CrossOrigin
 public class TbGroupController {
     @Autowired
     private TbGroupService tbGroupService;

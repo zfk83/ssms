@@ -1,12 +1,16 @@
 package com.zfk.ssms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zfk.ssms.common.Result;
 import com.zfk.ssms.domain.TbPurchase;
 import com.zfk.ssms.service.TbPurchaseService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author ZFK
@@ -14,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @Api
 @RestController
 @RequestMapping("/purchase")
-@CrossOrigin
 public class TbPurchaseController {
     @Autowired
     private TbPurchaseService tbPurchaseService;
@@ -38,9 +41,13 @@ public class TbPurchaseController {
     }
 
     @GetMapping("/get")
-    public Result getGroup(@RequestBody Long groupId) {
-        tbPurchaseService.getById(groupId);
-        return Result.success(tbPurchaseService.getById(groupId), "查询成功");
+    public Result getPurchase(Long purchaseId) {
+        if (purchaseId == null) {
+            return Result.success(tbPurchaseService.list(), "查询成功");
+        } else {
+            List<TbPurchase> list = tbPurchaseService.list(new LambdaQueryWrapper<TbPurchase>().eq(TbPurchase::getPurchaseId, purchaseId));
+            return Result.success(list, "查询成功");
+        }
     }
 
     @GetMapping("/list")

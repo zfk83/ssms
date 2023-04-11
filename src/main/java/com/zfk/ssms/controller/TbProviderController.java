@@ -1,12 +1,16 @@
 package com.zfk.ssms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zfk.ssms.common.Result;
 import com.zfk.ssms.domain.TbProvider;
 import com.zfk.ssms.service.TbProviderService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author ZFK
@@ -14,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @Api
 @RestController
 @RequestMapping("/provider")
-@CrossOrigin
 public class  TbProviderController {
     @Autowired
     private TbProviderService tbProviderService;
@@ -38,9 +41,13 @@ public class  TbProviderController {
     }
 
     @GetMapping("/get")
-    public Result getGroup(@RequestBody Long groupId) {
-        tbProviderService.getById(groupId);
-        return Result.success(tbProviderService.getById(groupId), "查询成功");
+    public Result getProvider(String contactPhone) {
+        if (StringUtils.isEmpty(contactPhone)) {
+            return Result.success(tbProviderService.list(), "查询成功");
+        } else {
+            List<TbProvider> list = tbProviderService.list(new LambdaQueryWrapper<TbProvider>().eq(TbProvider::getContactPhone, contactPhone));
+            return Result.success(list, "查询成功");
+        }
     }
 
     @GetMapping("/list")

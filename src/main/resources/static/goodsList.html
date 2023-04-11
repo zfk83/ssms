@@ -7,114 +7,116 @@
     <link rel="stylesheet" href="./element-ui/index.css">
 </head>
 <body>
-    <div id="app">
-        <div style="padding: 20px;">
-            <div class="title">
-                <span>商品信息维护</span>
-            </div>
-
-            <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                <el-form-item label="商品编号：">
-                    <el-input v-model="formInline.productId" placeholder="请输入商品编号"></el-input>
-                </el-form-item>
-                <el-form-item label="商品名称：">
-                    <el-input v-model="formInline.productName" placeholder="请输入商品名称"></el-input>
-                </el-form-item>
-                <el-form-item label="商品类别：">
-                    <el-select v-model="formInline.groupId" placeholder="全部" >
-                        <el-option v-for="item in options" :key="item.groupId" :label="item.groupName" :value="item.groupId"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item style="margin-left: 20px">
-                    <el-button  type="success" icon="el-icon-search" @click="onSearch">开始查找</el-button>
-                    <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增商品</el-button>
-                </el-form-item>
-            </el-form>
-
-            <el-table :data="products" :border="true" class="table">
-                <el-table-column prop="productId" label="商品编号"></el-table-column>
-                <el-table-column prop="productName" label="商品名称"></el-table-column>
-                <el-table-column prop="group" label="分类"></el-table-column>
-                <el-table-column prop="photo" label="图片">
-                    <template slot-scope="scope">
-                        <img :src="scope.row.photo" width="80px" height="80px"/>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="provider" label="供应商"></el-table-column>
-                <el-table-column prop="yieldTime" label="生产日期"></el-table-column>
-                <el-table-column prop="salePrice" label="价格"></el-table-column>
-                <el-table-column prop="saleCount" label="售出数"></el-table-column>
-                <el-table-column prop="stock" label="库存数"></el-table-column>
-                <el-table-column prop="operation" label="操作" width="300px">
-                    <template slot-scope="scope">
-                        <el-button type="primary" icon="el-icon-edit" @click="handleClick(scope.row)">修改</el-button>
-                        <el-button type="danger" icon="el-icon-delete" @click="cancelGoods(scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-row>
-                <el-col :span="24" style="text-align: right;margin-top:30px;">
-                    <el-pagination
-                            :page-size="5"
-                            :page-count="6"
-                            background
-                            layout="prev, pager, next"
-                            :total="43">
-                    </el-pagination>
-                </el-col>
-            </el-row>
+<div id="app">
+    <div style="padding: 20px;">
+        <div class="title">
+            <span>商品信息维护</span>
         </div>
 
-        <el-dialog title="新增商品" :visible.sync="dialogFormVisible" >
-            <el-form :model="form">
-                <el-form-item label="商品编号" :label-width="formLabelWidth">
-                    <el-input v-model="form.productId" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="商品名称" :label-width="formLabelWidth">
-                    <el-input v-model="form.productName" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="分类" :label-width="formLabelWidth">
-                    <el-select v-model="form.groupId" placeholder="全部" >
-                        <el-option v-for="item in options" :key="item.groupId" :label="item.groupName" :value="item.groupId"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="图片" :label-width="formLabelWidth">
-                    <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove"
-                            :before-remove="beforeRemove"
-                            multiple
-                            :limit="3"
-                            :on-exceed="handleExceed"
-                            :file-list="fileList">
-                        <el-button size="small" type="primary">点击上传</el-button>
-                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
-                </el-form-item>
-                <el-form-item label="供应商" :label-width="formLabelWidth">
-                    <el-input v-model="form.provider" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="生产日期" :label-width="formLabelWidth">
-                    <el-input v-model="form.yieldTime" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="价格" :label-width="formLabelWidth">
-                    <el-input v-model="form.salePrice" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="售出数" :label-width="formLabelWidth">
-                    <el-input v-model="form.saleCount" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="库存数" :label-width="formLabelWidth">
-                    <el-input v-model="form.stock" autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="handleProductAdd">确 定</el-button>
-            </div>
-        </el-dialog>
+        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+            <el-form-item label="商品编号：">
+                <el-input v-model="formInline.productId" placeholder="请输入商品编号"></el-input>
+            </el-form-item>
+            <el-form-item label="商品名称：">
+                <el-input v-model="formInline.productName" placeholder="请输入商品名称"></el-input>
+            </el-form-item>
+            <el-form-item label="商品类别：">
+                <el-select v-model="formInline.groupId" placeholder="全部">
+                    <el-option v-for="item in options" :key="item.groupId" :label="item.groupName"
+                               :value="item.groupId"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item style="margin-left: 20px">
+                <el-button type="success" icon="el-icon-search" @click="getProduct">开始查找</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增商品</el-button>
+            </el-form-item>
+        </el-form>
+
+        <el-table :data="products" :border="true" class="table">
+            <el-table-column prop="productId" label="商品编号"></el-table-column>
+            <el-table-column prop="productName" label="商品名称"></el-table-column>
+            <el-table-column prop="group" label="分类"></el-table-column>
+            <el-table-column prop="photo" label="图片">
+                <template slot-scope="scope">
+                    <img :src="scope.row.photo" width="80px" height="80px"/>
+                </template>
+            </el-table-column>
+            <el-table-column prop="provider" label="供应商"></el-table-column>
+            <el-table-column prop="yieldTime" label="生产日期"></el-table-column>
+            <el-table-column prop="salePrice" label="价格"></el-table-column>
+            <el-table-column prop="saleCount" label="售出数"></el-table-column>
+            <el-table-column prop="stock" label="库存数"></el-table-column>
+            <el-table-column prop="operation" label="操作" width="300px">
+                <template slot-scope="scope">
+                    <el-button type="primary" icon="el-icon-edit" @click="handleClick(scope.row)">修改</el-button>
+                    <el-button type="danger" icon="el-icon-delete" @click="cancelGoods(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-row>
+            <el-col :span="24" style="text-align: right;margin-top:30px;">
+                <el-pagination
+                        :page-size="5"
+                        :page-count="6"
+                        background
+                        layout="prev, pager, next"
+                        :total="43">
+                </el-pagination>
+            </el-col>
+        </el-row>
     </div>
+
+    <el-dialog title="新增商品" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item label="商品编号" :label-width="formLabelWidth">
+                <el-input v-model="form.productId" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="商品名称" :label-width="formLabelWidth">
+                <el-input v-model="form.productName" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="分类" :label-width="formLabelWidth">
+                <el-select v-model="form.groupId" placeholder="全部">
+                    <el-option v-for="item in options" :key="item.groupId" :label="item.groupName"
+                               :value="item.groupId"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="图片" :label-width="formLabelWidth">
+                <el-upload
+                        class="upload-demo"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        :before-remove="beforeRemove"
+                        multiple
+                        :limit="3"
+                        :on-exceed="handleExceed"
+                        :file-list="fileList">
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+            </el-form-item>
+            <el-form-item label="供应商" :label-width="formLabelWidth">
+                <el-input v-model="form.provider" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="生产日期" :label-width="formLabelWidth">
+                <el-input v-model="form.yieldTime" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="价格" :label-width="formLabelWidth">
+                <el-input v-model="form.salePrice" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="售出数" :label-width="formLabelWidth">
+                <el-input v-model="form.saleCount" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="库存数" :label-width="formLabelWidth">
+                <el-input v-model="form.stock" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="handleProductAdd">确 定</el-button>
+        </div>
+    </el-dialog>
+</div>
 </body>
 
 <script src="./vue/vue.js"></script>
@@ -127,21 +129,26 @@
 
 <script>
     new Vue({
-        el:'#app',
+        el: '#app',
         data() {
             return {
                 input: "",
-                fileList: [{
-                    name: 'food.jpeg',
-                    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'},
-                    {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+                fileList: [
+                    {
+                        name: 'food.jpeg',
+                        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+                    },
+                    {
+                        name: 'food2.jpeg',
+                        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+                    }
+                ],
                 formInline: {
                     productId: '',
                     productName: '',
                     group: '',
                 },
-                products: [
-                ],
+                products: [],
                 dialogFormVisible: false,
                 form: {
                     productId: '',
@@ -159,7 +166,7 @@
             };
         },
 
-        methods:{
+        methods: {
 
             handleRemove(file, fileList) {
                 console.log(file, fileList);
@@ -171,21 +178,16 @@
                 this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
             },
             beforeRemove(file, fileList) {
-                return this.$confirm(`确定移除 ${ file.name }？`);
+                return this.$confirm(`确定移除 ${file.name}？`);
             },
 
-            onSearch() {
-                //执行搜索操作
-                axios.get('/product/get', { params: { productId: this.formInline.productId } })
-                    .then(response => {
-                        this.products = response.data.result;
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
+            getProduct() {
+                getProduct(this.formInline.productId).then(response => {
+                    this.products = response.data;
+                })
             },
 
-            getProducts(){
+            getProducts() {
                 getProducts().then(response => {
                     this.products = response.data;
                 })
@@ -197,7 +199,7 @@
             },
 
             //点击删除按钮删除商品
-            cancelGoods(row){
+            cancelGoods(row) {
                 this.$confirm('确认删除该商品吗？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -211,14 +213,14 @@
                     this.$message.info('已取消删除')
                 })
             },
-            handleProductAdd(){
+            handleProductAdd() {
                 addProduct(this.form).then(response => {
                     this.getProducts();
                     this.dialogFormVisible = false;
                 })
             },
         },
-        mounted(){
+        created() {
             this.getProducts();
             this.getGroups();
         },
@@ -227,27 +229,28 @@
 </script>
 
 <style lang="less">
-    html,body{
+    html, body {
         height: 100%;
         width: 100%;
         margin: 0;
         padding: 0;
     }
-    #app{
+
+    #app {
         height: 100%;
         width: 100%;
     }
 
-    .table{
+    .table {
         margin-top: 10px;
     }
 
-    .title{
+    .title {
         font-size: 25px;
         margin-top: 20px;
     }
 
-    .demo-form-inline{
+    .demo-form-inline {
         margin-top: 20px;
     }
 

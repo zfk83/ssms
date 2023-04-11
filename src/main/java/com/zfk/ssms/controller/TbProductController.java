@@ -1,5 +1,6 @@
 package com.zfk.ssms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zfk.ssms.common.Result;
 import com.zfk.ssms.domain.TbProduct;
 import com.zfk.ssms.dto.ProductDTO;
@@ -7,7 +8,10 @@ import com.zfk.ssms.service.TbProductService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author ZFK
@@ -15,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @Api
 @RestController
 @RequestMapping("/product")
-@CrossOrigin
 public class TbProductController {
     @Autowired
     private TbProductService tbProductService;
@@ -39,9 +42,13 @@ public class TbProductController {
     }
 
     @GetMapping("/get")
-    public Result getGroup(@RequestBody Long groupId) {
-        tbProductService.getById(groupId);
-        return Result.success(tbProductService.getById(groupId), "查询成功");
+    public Result getProduct(Long productId) {
+        if (productId == null) {
+            return Result.success(tbProductService.getProductList(), "查询成功");
+        } else {
+            List<TbProduct> list = tbProductService.list(new LambdaQueryWrapper<TbProduct>().eq(TbProduct::getProductId, productId));
+            return Result.success(list, "查询成功");
+        }
     }
 
     @GetMapping("/list")

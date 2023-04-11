@@ -13,12 +13,12 @@
             <span>供应商详情</span>
         </div>
 
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form :inline="true" class="demo-form-inline">
             <el-form-item label="联系电话：">
-                <el-input v-model="formInline.contactPhone" placeholder="请输入联系电话"></el-input>
+                <el-input v-model="contactPhone" placeholder="请输入联系电话"></el-input>
             </el-form-item>
             <el-form-item style="margin-left: 20px">
-                <el-button  type="success" icon="el-icon-search" >开始查找</el-button>
+                <el-button  type="success" icon="el-icon-search" @click="getProvider" >开始查找</el-button>
                 <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增供应商</el-button>
             </el-form-item>
         </el-form>
@@ -86,12 +86,7 @@
         data(){
             return {
                 input: "",
-                formInline: {
-                    providerId: '',
-                    providerName: '',
-                    providerAddress: '',
-                    contactPhone: '',
-                },
+                contactPhone: '',
                 providers: [
 
                 ],
@@ -106,6 +101,12 @@
             }
         },
         methods:{
+
+            getProvider(){
+                getProvider(this.contactPhone).then(response => {
+                    this.providers = response.data;
+                })
+            },
             getProviders() {
                 getProviders().then(response => {
                     this.providers = response.data;
@@ -132,7 +133,7 @@
                 })
             },
         },
-        mounted() {
+        created() {
             this.getProviders();
         },
     });

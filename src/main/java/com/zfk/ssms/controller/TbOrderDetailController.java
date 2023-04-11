@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @Api
 @RestController
 @RequestMapping("/orderDetail")
-@CrossOrigin
 public class TbOrderDetailController {
     @Autowired
     private TbOrderDetailService tbOrderDetailService;

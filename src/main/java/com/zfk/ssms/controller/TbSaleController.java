@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @Api
 @RestController
 @RequestMapping("/sale")
-@CrossOrigin
 public class TbSaleController {
     @Autowired
     private TbSaleService tbSaleService;

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @Api
 @RestController
 @RequestMapping("/user")
-@CrossOrigin
 public class TbUserController {
     @Autowired
     private TbUserService tbUserService;

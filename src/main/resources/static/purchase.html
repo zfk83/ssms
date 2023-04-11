@@ -25,7 +25,7 @@
         </el-form-item>
 
         <el-form-item>
-            <el-button  type="success" icon="el-icon-search" >开始查找</el-button>
+            <el-button  type="success" icon="el-icon-search" @click="getPurchase">开始查找</el-button>
             <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增采购订单</el-button>
 
         </el-form-item>
@@ -133,6 +133,12 @@
         },
         methods:{
 
+            getPurchase(){
+                getPurchase(this.formInline.purchaseId).then(response => {
+                    this.purchases = response.data;
+                })
+            },
+
             getPurchases(){
                 getPurchases().then(response => {
                     this.purchases = response.data;
@@ -160,7 +166,7 @@
                 })
             },
         },
-        mounted(){
+        created(){
             this.getPurchases();
         },
     });

@@ -28,9 +28,9 @@ function deletePurchase(id){
     });
 }
 
-function getPurchase(id){
+function getPurchase(purchaseId){
     return request({
-        url: '/purchase/get/' + id,
+        url: '/purchase/get?purchaseId=' + purchaseId,
         method: 'get'
     });
 }
