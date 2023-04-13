@@ -123,10 +123,6 @@
                     purchasePrice: '',
                     purchaseCount: '',
                     purchaseTime: '',
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
                 },
                 formLabelWidth: '120px'
             }
@@ -134,7 +130,8 @@
         methods:{
 
             getPurchase(){
-                getPurchase(this.formInline.purchaseId).then(response => {
+                getPurchase(this.formInline).then(response => {
+                    console.log(response.data);
                     this.purchases = response.data;
                 })
             },

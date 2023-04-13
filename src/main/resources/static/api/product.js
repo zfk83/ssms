@@ -28,9 +28,10 @@ function deleteProduct(id) {
     });
 }
 
-function getProduct(productId) {
+function getProduct(params) {
     return request({
-        url: '/product/get?productId=' + productId,
-        method: 'get'
+        url: '/product/get',
+        method: 'get',
+        params: params
     });
 }

@@ -146,7 +146,7 @@
                 formInline: {
                     productId: '',
                     productName: '',
-                    group: '',
+                    groupId: '',
                 },
                 products: [],
                 dialogFormVisible: false,
@@ -182,7 +182,8 @@
             },
 
             getProduct() {
-                getProduct(this.formInline.productId).then(response => {
+                getProduct(this.formInline).then(response => {
+                    console.log(response.data);
                     this.products = response.data;
                 })
             },

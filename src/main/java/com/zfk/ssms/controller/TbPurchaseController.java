@@ -41,13 +41,26 @@ public class TbPurchaseController {
     }
 
     @GetMapping("/get")
-    public Result getPurchase(Long purchaseId) {
-        if (purchaseId == null) {
+    public Result getPurchase(Long purchaseId, Long providerId, Long productId) {
+        if ((purchaseId == null)&&(providerId == null)&&(productId == null)) {
             return Result.success(tbPurchaseService.list(), "查询成功");
-        } else {
-            List<TbPurchase> list = tbPurchaseService.list(new LambdaQueryWrapper<TbPurchase>().eq(TbPurchase::getPurchaseId, purchaseId));
-            return Result.success(list, "查询成功");
         }
+        if(purchaseId != null) {
+            LambdaQueryWrapper<TbPurchase> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(TbPurchase::getPurchaseId, purchaseId);
+            return Result.success(tbPurchaseService.list(queryWrapper), "查询成功");
+        }
+        if(providerId != null) {
+            LambdaQueryWrapper<TbPurchase> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(TbPurchase::getProviderId, providerId);
+            return Result.success(tbPurchaseService.list(queryWrapper), "查询成功");
+        }
+        if(productId != null) {
+            LambdaQueryWrapper<TbPurchase> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(TbPurchase::getProductId, productId);
+            return Result.success(tbPurchaseService.list(queryWrapper), "查询成功");
+        }
+        return Result.fail(null, "查询失败");
     }
 
     @GetMapping("/list")
