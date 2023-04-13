@@ -26,7 +26,7 @@
 
         <el-form-item>
             <el-button  type="success" icon="el-icon-search" @click="getPurchase">开始查找</el-button>
-            <el-button  type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增采购订单</el-button>
+            <el-button  type="primary" icon="el-icon-plus" @click="purchaseAddVisible = true">新增采购订单</el-button>
 
         </el-form-item>
     </el-form>
@@ -41,7 +41,7 @@
         <el-table-column prop="operation" label="操作" width="450px">
             <template slot-scope="scope">
                 <el-button type="info" style="width: 120px" icon="el-icon-document" @click="handleClick(scope.row)">采购信息</el-button>
-                <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="handleClick(scope.row)">修改</el-button>
+                <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="purchaseUpdateVisible = true">修改</el-button>
                 <el-button type="danger" style="width: 120px" icon="el-icon-delete" @click="cancelPurchase(scope.row)">删除</el-button>
             </template>
         </el-table-column>
@@ -60,7 +60,7 @@
     </el-row>
 </div>
 
-    <el-dialog title="新增采购订单" :visible.sync="dialogFormVisible" >
+    <el-dialog title="新增采购订单" :visible.sync="purchaseAddVisible" >
         <el-form :model="form">
             <el-form-item label="采购编号" :label-width="formLabelWidth">
                 <el-input v-model="form.purchaseId" autocomplete="off"></el-input>
@@ -82,7 +82,34 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button @click="purchaseAddVisible = false">取 消</el-button>
+            <el-button type="primary" @click="handlePurchaseAdd">确 定</el-button>
+        </div>
+    </el-dialog>
+
+    <el-dialog title="修改" :visible.sync="purchaseUpdateVisible" >
+        <el-form :model="formIn">
+            <el-form-item label="采购编号" :label-width="formLabelWidth">
+                <el-input v-model="formIn.purchaseId" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="商品编号" :label-width="formLabelWidth">
+                <el-input v-model="formIn.productId" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="供应商编号" :label-width="formLabelWidth">
+                <el-input v-model="formIn.providerId" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="进货价格" :label-width="formLabelWidth">
+                <el-input v-model="formIn.purchasePrice " autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="采购数量" :label-width="formLabelWidth">
+                <el-input v-model="formIn.purchaseCount" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="采购时间" :label-width="formLabelWidth">
+                <el-input v-model="formIn.purchaseTime" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="purchaseUpdateVisible = false">取 消</el-button>
             <el-button type="primary" @click="handlePurchaseAdd">确 定</el-button>
         </div>
     </el-dialog>
@@ -115,8 +142,17 @@
                 purchases: [
 
                 ],
-                dialogFormVisible: false,
+                purchaseAddVisible: false,
+                purchaseUpdateVisible: false,
                 form: {
+                    purchaseId: '',
+                    productId: '',
+                    providerId: '',
+                    purchasePrice: '',
+                    purchaseCount: '',
+                    purchaseTime: '',
+                },
+                formIn: {
                     purchaseId: '',
                     productId: '',
                     providerId: '',
@@ -159,7 +195,7 @@
             handlePurchaseAdd(){
                 addPurchase(this.form).then(response => {
                     this.getPurchases();
-                    this.dialogFormVisible = false;
+                    this.purchaseAddVisible = false;
                 })
             },
         },

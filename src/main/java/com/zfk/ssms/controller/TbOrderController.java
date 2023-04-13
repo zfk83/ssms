@@ -1,5 +1,6 @@
 package com.zfk.ssms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zfk.ssms.common.Result;
 import com.zfk.ssms.domain.TbOrder;
 import com.zfk.ssms.service.TbOrderService;
@@ -20,13 +21,13 @@ public class TbOrderController {
 
     @PostMapping("/add")
     public Result addOrder(@RequestBody TbOrder tbOrder) {
-        tbOrderService.save(tbOrder);
-        return Result.success(null, "添加成功");
+        boolean success = tbOrderService.save(tbOrder);
+        return success ? Result.success(null, "添加成功") : Result.fail(null, "添加失败");
     }
 
     @DeleteMapping("/delete")
-    public Result deleteOrder(@RequestBody TbOrder tbOrder) {
-        tbOrderService.removeById(tbOrder.getOrderId());
+    public Result deleteOrder(Long id) {
+        tbOrderService.removeById(id);
         return Result.success(null, "删除成功");
     }
 
@@ -37,8 +38,25 @@ public class TbOrderController {
     }
 
     @GetMapping("/get")
-    public Result getOrder(@RequestBody Long orderId) {
-        tbOrderService.getById(orderId);
-        return Result.success(tbOrderService.getById(orderId), "查询成功");
+    public Result getOrder(Long orderId, Long userId) {
+        if ((orderId == null)&&(userId == null)) {
+            return Result.success(tbOrderService.list(), "查询成功");
+        }
+        if(orderId != null) {
+            LambdaQueryWrapper<TbOrder> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(TbOrder::getOrderId, orderId);
+            return Result.success(tbOrderService.list(queryWrapper), "查询成功");
+        }
+        if(userId != null) {
+            LambdaQueryWrapper<TbOrder> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(TbOrder::getUserId, userId);
+            return Result.success(tbOrderService.list(queryWrapper), "查询成功");
+        }
+        return Result.fail(null, "查询失败");
+    }
+
+    @GetMapping("/list")
+    public Result ListOrder() {
+        return Result.success(tbOrderService.list(), null);
     }
 }

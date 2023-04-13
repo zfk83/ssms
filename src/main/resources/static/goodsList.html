@@ -28,7 +28,7 @@
             </el-form-item>
             <el-form-item style="margin-left: 20px">
                 <el-button type="success" icon="el-icon-search" @click="getProduct">开始查找</el-button>
-                <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增商品</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="productAddVisible = true">新增商品</el-button>
             </el-form-item>
         </el-form>
 
@@ -48,7 +48,7 @@
             <el-table-column prop="stock" label="库存数"></el-table-column>
             <el-table-column prop="operation" label="操作" width="300px">
                 <template slot-scope="scope">
-                    <el-button type="primary" icon="el-icon-edit" @click="handleClick(scope.row)">修改</el-button>
+                    <el-button type="primary" icon="el-icon-edit" @click="productUpdateVisible = true">修改</el-button>
                     <el-button type="danger" icon="el-icon-delete" @click="cancelGoods(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -66,7 +66,7 @@
         </el-row>
     </div>
 
-    <el-dialog title="新增商品" :visible.sync="dialogFormVisible">
+    <el-dialog title="新增商品" :visible.sync="productAddVisible">
         <el-form :model="form">
             <el-form-item label="商品编号" :label-width="formLabelWidth">
                 <el-input v-model="form.productId" autocomplete="off"></el-input>
@@ -112,7 +112,58 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button @click="productAddVisible = false">取 消</el-button>
+            <el-button type="primary" @click="handleProductAdd">确 定</el-button>
+        </div>
+    </el-dialog>
+
+    <el-dialog title="修改" :visible.sync="productUpdateVisible">
+        <el-form :model="formIn">
+            <el-form-item label="商品编号" :label-width="formLabelWidth">
+                <el-input v-model="formIn.productId" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="商品名称" :label-width="formLabelWidth">
+                <el-input v-model="formIn.productName" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="分类" :label-width="formLabelWidth">
+                <el-select v-model="formIn.groupId" placeholder="全部">
+                    <el-option v-for="item in options" :key="item.groupId" :label="item.groupName"
+                               :value="item.groupId"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="图片" :label-width="formLabelWidth">
+                <el-upload
+                        class="upload-demo"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        :before-remove="beforeRemove"
+                        multiple
+                        :limit="3"
+                        :on-exceed="handleExceed"
+                        :file-list="fileList">
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+            </el-form-item>
+            <el-form-item label="供应商" :label-width="formLabelWidth">
+                <el-input v-model="formIn.provider" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="生产日期" :label-width="formLabelWidth">
+                <el-input v-model="formIn.yieldTime" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="价格" :label-width="formLabelWidth">
+                <el-input v-model="formIn.salePrice" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="售出数" :label-width="formLabelWidth">
+                <el-input v-model="formIn.saleCount" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="库存数" :label-width="formLabelWidth">
+                <el-input v-model="formIn.stock" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="productUpdateVisible = false">取 消</el-button>
             <el-button type="primary" @click="handleProductAdd">确 定</el-button>
         </div>
     </el-dialog>
@@ -149,8 +200,20 @@
                     groupId: '',
                 },
                 products: [],
-                dialogFormVisible: false,
+                productAddVisible: false,
+                productUpdateVisible: false,
                 form: {
+                    productId: '',
+                    productName: '',
+                    group: '',
+                    photo: '',
+                    provider: '',
+                    yieldTime: '',
+                    salePrice: '',
+                    saleCount: '',
+                    stock: '',
+                },
+                formIn: {
                     productId: '',
                     productName: '',
                     group: '',
@@ -217,7 +280,7 @@
             handleProductAdd() {
                 addProduct(this.form).then(response => {
                     this.getProducts();
-                    this.dialogFormVisible = false;
+                    this.productAddVisible = false;
                 })
             },
         },

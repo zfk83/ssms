@@ -14,10 +14,10 @@
     </div>
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="订单编号：">
-            <el-input v-model="formInline.region" placeholder="请输入订单编号"></el-input>
+            <el-input v-model="formInline.orderId" placeholder="请输入订单编号"></el-input>
         </el-form-item>
         <el-form-item label="用户编号：">
-            <el-input v-model="formInline.region" placeholder="请输入用户编号"></el-input>
+            <el-input v-model="formInline.userId" placeholder="请输入用户编号"></el-input>
         </el-form-item>
         <el-form-item class="block">
             <span class="demonstration">时间：</span>
@@ -32,18 +32,18 @@
             </el-date-picker>
         </el-form-item>
         <el-form-item label="订单状态：">
-        <el-select v-model="formInline.region" placeholder="全部" >
+        <el-select v-model="formInline.orderStatus" placeholder="全部" >
             <el-option label="已发货" value="Shipped"></el-option>
             <el-option label="未发货" value="not shipped"></el-option>
         </el-select>
         </el-form-item>
         <el-form-item>
-            <el-button  type="success" icon="el-icon-search" @click="onSubmit">搜索</el-button>
-            <el-button  type="primary" icon="el-icon-refresh" @click="add">重置</el-button>
+            <el-button  type="success" icon="el-icon-search" @click="getOrder">搜索</el-button>
+            <el-button  type="primary" icon="el-icon-refresh" >重置</el-button>
         </el-form-item>
     </el-form>
 
-    <el-table :data="products" :border="true" class="table" >
+    <el-table :data="orders" :border="true" class="table" >
         <el-table-column prop="orderId" label="订单编号"></el-table-column>
         <el-table-column prop="userId" label="用户编号"></el-table-column>
         <el-table-column prop="totalPrice" label="商品总价"></el-table-column>
@@ -72,6 +72,8 @@
 <!-- 引入组件库 -->
 <script src="./element-ui/index.js"></script>
 <script src="./axios/axios.min.js"></script>
+<script src="./utils/request.js"></script>
+<script src="api/order.js"></script>
 
 <script>
     new Vue({
@@ -80,118 +82,34 @@
             return {
                 input: "",
                 formInline: {
-                    user: '',
-                    region: ''
+                    orderId: '',
+                    userId: '',
+                    orderStatus: '',
+                    orderTime: ''
                 },
-                products: [
-                    {
-                        orderId: 1,
-                        userId: 1,
-                        totalPrice: 100,
-                        orderStatus: '已发货',
-                        orderTime: '2020-01-01 12:00',
-                        shippingAddress: '广东省广州市天河区',
-                        remark: '无',
-                    },
-                    {
-                        orderId: 2,
-                        userId: 2,
-                        totalPrice: 100,
-                        orderStatus: '已发货',
-                        orderTime: '2020-01-01 12:00',
-                        shippingAddress: '广东省广州市天河区',
-                        remark: '无',
-                    },
-                    {
-                        orderId: 3,
-                        userId: 3,
-                        totalPrice: 100,
-                        orderStatus: '已发货',
-                        orderTime: '2020-01-01 12:00',
-                        shippingAddress: '广东省广州市天河区',
-                        remark: '无',
-                    },
-                    {
-                        orderId: 4,
-                        userId: 4,
-                        totalPrice: 100,
-                        orderStatus: '已发货',
-                        orderTime: '2020-01-01 12:00',
-                        shippingAddress: '广东省广州市天河区',
-                        remark: '无',
-                    },
-                    {
-                        orderId: 5,
-                        userId: 5,
-                        totalPrice: 100,
-                        orderStatus: '已发货',
-                        orderTime: '2020-01-01 12:00',
-                        shippingAddress: '广东省广州市天河区',
-                        remark: '无',
-                    },
-                    {
-                        orderId: 6,
-                        userId: 6,
-                        totalPrice: 100,
-                        orderStatus: '已发货',
-                        orderTime: '2020-01-01 12:00',
-                        shippingAddress: '广东省广州市天河区',
-                        remark: '无',
-                    },
-                    {
-                        orderId: 7,
-                        userId: 7,
-                        totalPrice: 100,
-                        orderStatus: '已发货',
-                        orderTime: '2020-01-01 12:00',
-                        shippingAddress: '广东省广州市天河区',
-                        remark: '无',
-                    },
-                    {
-                        orderId: 8,
-                        userId: 8,
-                        totalPrice: 100,
-                        orderStatus: '已发货',
-                        orderTime: '2020-01-01 12:00',
-                        shippingAddress: '广东省广州市天河区',
-                        remark: '无',
-                    },
-                    {
-                        orderId: 9,
-                        userId: 9 ,
-                        totalPrice: 100,
-                        orderStatus: '已发货',
-                        orderTime: '2020-01-01 12:00',
-                        shippingAddress: '广东省广州市天河区',
-                        remark: '无',
-                    },
-                    {
-                        orderId: 10,
-                        userId: 10,
-                        totalPrice: 100,
-                        orderStatus: '已发货',
-                        orderTime: '2020-01-01 12:00',
-                        shippingAddress: '广东省广州市天河区',
-                        remark: '无',
-                    },
+                orders: [
+
                 ]
             }
         },
         methods:{
-            onClear() {
-                this.keyword = "";
-            },
-            plus(){
 
+            getOrder(){
+                getOrder(this.formInline).then(response => {
+                    console.log(response.data);
+                    this.orders = response.data;
+                })
             },
-            add(){
-                this.formInline.user = '';
-                this.formInline.region = '';
-            },
-            onSubmit(){
-                console.log(this.formInline);
-            }
 
+            getOrders(){
+                getOrders().then(response => {
+                    this.orders = response.data;
+                })
+            },
+
+        },
+        created(){
+            this.getOrders();
         }
     });
 </script>
