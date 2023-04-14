@@ -31,7 +31,7 @@
             <el-table-column prop="operation" label="操作" width="450px">
                 <template slot-scope="scope">
                     <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="userUpdateVisible = true">修改信息</el-button>
-                    <el-button type="info" style="width: 120px" icon="el-icon-edit" @click="handleClick(scope.row)">修改密码</el-button>
+                    <el-button type="info" style="width: 120px" icon="el-icon-edit" @click="passwordUpdateVisible = true">修改密码</el-button>
                     <el-button type="danger" style="width: 120px" icon="el-icon-delete" @click="cancelUser(scope.row)">删除用户</el-button>
                 </template>
             </el-table-column>
@@ -96,6 +96,18 @@
                 <el-button type="primary" @click="handleUserAdd">确 定</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog title="修改密码" :visible.sync="passwordUpdateVisible" >
+            <el-form :model="formLine">
+                <el-form-item label="密码" :label-width="formLabelWidth">
+                    <el-input v-model="formLine.password" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="passwordUpdateVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleUserAdd">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </body>
 
@@ -120,6 +132,7 @@
                 ],
                 userAddVisible: false,
                 userUpdateVisible: false,
+                passwordUpdateVisible: false,
                 form: {
                     userId: '',
                     userName: '',
@@ -133,6 +146,9 @@
                     password: '',
                     phoneNumber: '',
                     sex: '',
+                },
+                formLine: {
+                    password: '',
                 },
                 formLabelWidth: '120px'
             }

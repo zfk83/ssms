@@ -47,7 +47,7 @@
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="operation" label="操作" width="300px">
             <template slot-scope="scope">
-                <el-button type="primary" icon="el-icon-truck" >发货</el-button>
+                <el-button type="primary" icon="el-icon-truck" @click="shippedVisible = true">发货</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -64,6 +64,17 @@
         </el-col>
     </el-row>
 </div>
+    <el-dialog
+            title="提示"
+            :visible.sync="shippedVisible"
+            width="30%"
+            center>
+        <span>是否确认发货？</span>
+        <span slot="footer" class="dialog-footer">
+    <el-button @click="shippedVisible = false">取 消</el-button>
+    <el-button type="primary" @click="shippedVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
 </div>
 </body>
 <script src="./vue/vue.js"></script>
@@ -87,7 +98,8 @@
                 },
                 orders: [
 
-                ]
+                ],
+                shippedVisible: false,
             }
         },
         methods:{
