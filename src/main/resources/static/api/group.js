@@ -28,9 +28,17 @@ function deleteGroup(id) {
     });
 }
 
-function getGroup(id) {
+function getGroup(params) {
     return request({
-        url: '/group/get/' + id,
+        url: '/group/get/',
+        method: 'get',
+        params: params
+    });
+}
+
+function getGroupById(id) {
+    return request({
+        url: '/group/getById?id=' + id,
         method: 'get'
     });
 }

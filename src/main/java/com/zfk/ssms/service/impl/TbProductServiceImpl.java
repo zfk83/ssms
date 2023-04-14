@@ -62,6 +62,31 @@ public class TbProductServiceImpl extends ServiceImpl<TbProductMapper, TbProduct
         }
         return this.save(tbProduct);
     }
+
+    @Override
+    public ProductDTO getProductById(Long productId) {
+        ProductDTO productDTO = new ProductDTO();
+        TbProduct product = this.getById(productId);
+        BeanUtils.copyProperties(product, productDTO);
+        TbProvider tbProvider = tbProviderService.getById(product.getProviderId());
+        if(tbProvider != null){
+            productDTO.setProvider(tbProvider.getProviderName());
+        }
+        return productDTO;
+    }
+
+    @Override
+    public boolean updateProduct(ProductDTO productDTO) {
+        TbProduct tbProduct = new TbProduct();
+        BeanUtils.copyProperties(productDTO, tbProduct);
+        LambdaQueryWrapper<TbProvider> providerLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        TbProvider tbProvider = tbProviderService.getOne(providerLambdaQueryWrapper.eq(TbProvider::getProviderName, productDTO.getProvider()));
+        if(tbProvider != null) {
+            tbProduct.setProviderId(tbProvider.getProviderId());
+        }
+        this.updateById(tbProduct);
+        return true;
+    }
 }
 
 

@@ -1,6 +1,7 @@
 package com.zfk.ssms.dto;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -71,5 +72,6 @@ public class ProductDTO implements Serializable {
     /**
      * 生产日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date yieldTime;
 }

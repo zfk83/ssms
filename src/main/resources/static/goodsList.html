@@ -48,7 +48,7 @@
             <el-table-column prop="stock" label="库存数"></el-table-column>
             <el-table-column prop="operation" label="操作" width="300px">
                 <template slot-scope="scope">
-                    <el-button type="primary" icon="el-icon-edit" @click="productUpdateVisible = true">修改</el-button>
+                    <el-button type="primary" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
                     <el-button type="danger" icon="el-icon-delete" @click="cancelGoods(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -67,14 +67,14 @@
     </div>
 
     <el-dialog title="新增商品" :visible.sync="productAddVisible">
-        <el-form :model="form">
-            <el-form-item label="商品编号" :label-width="formLabelWidth">
+        <el-form :model="form" ref="form">
+            <el-form-item label="商品编号" :label-width="formLabelWidth" prop="productId">
                 <el-input v-model="form.productId" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="商品名称" :label-width="formLabelWidth">
+            <el-form-item label="商品名称" :label-width="formLabelWidth" prop="productName">
                 <el-input v-model="form.productName" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="分类" :label-width="formLabelWidth">
+            <el-form-item label="分类" :label-width="formLabelWidth" prop="groupId">
                 <el-select v-model="form.groupId" placeholder="全部">
                     <el-option v-for="item in options" :key="item.groupId" :label="item.groupName"
                                :value="item.groupId"></el-option>
@@ -83,31 +83,37 @@
             <el-form-item label="图片" :label-width="formLabelWidth">
                 <el-upload
                         class="upload-demo"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action="http://localhost/upload/pic"
                         :on-preview="handlePreview"
-                        :on-remove="handleRemove"
-                        :before-remove="beforeRemove"
-                        multiple
-                        :limit="3"
-                        :on-exceed="handleExceed"
+                        :on-success="handleSuccess"
+                        :before-upload="beforeAvatarUpload"
+                        :limit="1"
+                        :auto-upload="true"
                         :file-list="fileList">
                     <el-button size="small" type="primary">点击上传</el-button>
-                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg文件，且不超过2M</div>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="供应商" :label-width="formLabelWidth">
+            <el-form-item label="供应商" :label-width="formLabelWidth" prop="provider">
                 <el-input v-model="form.provider" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="生产日期" :label-width="formLabelWidth">
-                <el-input v-model="form.yieldTime" autocomplete="off"></el-input>
+            <el-form-item label="生产日期" :label-width="formLabelWidth" prop="yieldTime">
+                <div class="block">
+                    <el-date-picker
+                            v-model="form.yieldTime"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="选择日期时间">
+                    </el-date-picker>
+                </div>
             </el-form-item>
-            <el-form-item label="价格" :label-width="formLabelWidth">
+            <el-form-item label="价格" :label-width="formLabelWidth" prop="salePrice">
                 <el-input v-model="form.salePrice" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="售出数" :label-width="formLabelWidth">
+            <el-form-item label="售出数" :label-width="formLabelWidth" prop="saleCount">
                 <el-input v-model="form.saleCount" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="库存数" :label-width="formLabelWidth">
+            <el-form-item label="库存数" :label-width="formLabelWidth" prop="stock">
                 <el-input v-model="form.stock" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
@@ -134,23 +140,29 @@
             <el-form-item label="图片" :label-width="formLabelWidth">
                 <el-upload
                         class="upload-demo"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action="http://localhost/upload/pic"
                         :on-preview="handlePreview"
-                        :on-remove="handleRemove"
-                        :before-remove="beforeRemove"
-                        multiple
-                        :limit="3"
-                        :on-exceed="handleExceed"
+                        :on-success="handleSuccess"
+                        :before-upload="beforeAvatarUpload"
+                        :limit="1"
+                        :auto-upload="true"
                         :file-list="fileList">
                     <el-button size="small" type="primary">点击上传</el-button>
-                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg文件，且不超过2M</div>
                 </el-upload>
             </el-form-item>
             <el-form-item label="供应商" :label-width="formLabelWidth">
                 <el-input v-model="formIn.provider" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="生产日期" :label-width="formLabelWidth">
-                <el-input v-model="formIn.yieldTime" autocomplete="off"></el-input>
+                <div class="block">
+                    <el-date-picker
+                            v-model="formIn.yieldTime"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="选择日期时间">
+                    </el-date-picker>
+                </div>
             </el-form-item>
             <el-form-item label="价格" :label-width="formLabelWidth">
                 <el-input v-model="formIn.salePrice" autocomplete="off"></el-input>
@@ -164,7 +176,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="productUpdateVisible = false">取 消</el-button>
-            <el-button type="primary" @click="handleProductAdd">确 定</el-button>
+            <el-button type="primary" @click="handleProductUpdate">确 定</el-button>
         </div>
     </el-dialog>
 </div>
@@ -185,14 +197,6 @@
             return {
                 input: "",
                 fileList: [
-                    {
-                        name: 'food.jpeg',
-                        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-                    },
-                    {
-                        name: 'food2.jpeg',
-                        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-                    }
                 ],
                 formInline: {
                     productId: '',
@@ -231,19 +235,28 @@
 
         methods: {
 
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
+
             handlePreview(file) {
                 console.log(file);
             },
-            handleExceed(files, fileList) {
-                this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            handleSuccess(response, file, fileList) {
+                if(response.flag){
+                    this.form.photo = 'http://localhost/image/' + file.name;
+                    this.formIn.photo = 'http://localhost/image/' + file.name;
+                }
             },
-            beforeRemove(file, fileList) {
-                return this.$confirm(`确定移除 ${file.name}？`);
-            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 0.5;
 
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
             getProduct() {
                 getProduct(this.formInline).then(response => {
                     console.log(response.data);
@@ -282,7 +295,23 @@
                     this.getProducts();
                     this.productAddVisible = false;
                 })
+                this.$refs['form'].resetFields();
             },
+            handleProductUpdate() {
+                updateProduct(this.formIn).then(response => {
+                    getProducts().then(response => {
+                        this.products = response.data;
+                        this.productUpdateVisible = false;
+                    })
+                })
+            },
+            handleUpdate(row){
+                this.productUpdateVisible = true;
+                getProductById(row.productId).then(response => {
+                    console.log(response.data);
+                    this.formIn = response.data;
+                });
+            }
         },
         created() {
             this.getProducts();

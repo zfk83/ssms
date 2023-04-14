@@ -16,7 +16,7 @@
         <el-button style="margin-top: 30px" type="primary" icon="el-icon-plus" @click="groupAddVisible = true">
             新增商品分类
         </el-button>
-        <el-table :data="groups" :border="true" class="table">
+        <el-table :data="groups" :border="true"  class="table">
             <el-table-column prop="groupId" label="分类编号"></el-table-column>
             <el-table-column prop="groupName" label="分类"></el-table-column>
             <el-table-column prop="groupPhoto" label="图片">
@@ -26,7 +26,7 @@
             </el-table-column>
             <el-table-column prop="operation" label="操作" width="300px">
                 <template slot-scope="scope">
-                    <el-button type="primary" icon="el-icon-edit" @click="groupUpdateVisible = true">修改分类</el-button>
+                    <el-button type="primary" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改分类</el-button>
                     <el-button type="danger" icon="el-icon-delete" @click="cancelGroup(scope.row)">删除分类</el-button>
                 </template>
             </el-table-column>
@@ -46,26 +46,25 @@
     </div>
 
     <el-dialog title="新增商品分类" :visible.sync="groupAddVisible">
-        <el-form :model="form">
-            <el-form-item label="分类编号" :label-width="formLabelWidth">
+        <el-form :model="form" ref="form">
+            <el-form-item label="分类编号" :label-width="formLabelWidth" prop="groupId">
                 <el-input v-model="form.groupId" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="分类" :label-width="formLabelWidth">
+            <el-form-item label="分类" :label-width="formLabelWidth" prop="groupName">
                 <el-input v-model="form.groupName" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="图片" :label-width="formLabelWidth">
                 <el-upload
                         class="upload-demo"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action="http://localhost/upload/pic"
                         :on-preview="handlePreview"
-                        :on-remove="handleRemove"
-                        :before-remove="beforeRemove"
-                        multiple
-                        :limit="3"
-                        :on-exceed="handleExceed"
+                        :on-success="handleSuccess"
+                        :before-upload="beforeAvatarUpload"
+                        :limit="1"
+                        :auto-upload="true"
                         :file-list="fileList">
                     <el-button size="small" type="primary">点击上传</el-button>
-                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg文件，且不超过2M</div>
                 </el-upload>
             </el-form-item>
         </el-form>
@@ -86,22 +85,21 @@
             <el-form-item label="图片" :label-width="formLabelWidth">
                 <el-upload
                         class="upload-demo"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action="http://localhost/upload/pic"
                         :on-preview="handlePreview"
-                        :on-remove="handleRemove"
-                        :before-remove="beforeRemove"
-                        multiple
-                        :limit="3"
-                        :on-exceed="handleExceed"
+                        :on-success="handleSuccess"
+                        :before-upload="beforeAvatarUpload"
+                        :limit="1"
+                        :auto-upload="true"
                         :file-list="fileList">
                     <el-button size="small" type="primary">点击上传</el-button>
-                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg文件，且不超过2M</div>
                 </el-upload>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="groupUpdateVisible = false">取 消</el-button>
-            <el-button type="primary" @click="handleGroupAdd">确 定</el-button>
+            <el-button type="primary" @click="handleGroupUpdate">确 定</el-button>
         </div>
     </el-dialog>
 </div>
@@ -120,10 +118,8 @@
         data() {
             return {
 
-                fileList: [{
-                    name: 'food.jpeg',
-                    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'},
-                    {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+                fileList: [
+                ],
                 groups: [
 
                 ],
@@ -144,18 +140,29 @@
         },
         methods: {
 
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
             handlePreview(file) {
                 console.log(file);
             },
-            handleExceed(files, fileList) {
-                this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            handleSuccess(response, file, fileList) {
+                if(response.flag){
+                    this.form.groupPhoto = 'http://localhost/image/' + file.name;
+                    this.formIn.groupPhoto = 'http://localhost/image/' + file.name;
+                }
             },
-            beforeRemove(file, fileList) {
-                return this.$confirm(`确定移除 ${ file.name }？`);
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 0.5;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
             },
+
+
             getGroups() {
                 getGroups().then(response => {
                     this.groups = response.data;
@@ -181,9 +188,25 @@
                     this.getGroups();
                     this.groupAddVisible = false;
                 })
+                this.$refs['form'].resetFields();
             },
+            handleGroupUpdate(){
+                updateGroup(this.formIn).then(response => {
+                    getGroups().then(response => {
+                    this.groups = response.data;
+                    this.groupUpdateVisible = false;
+                    })
+                })
+            },
+            handleUpdate(row){
+                this.groupUpdateVisible = true;
+                getGroupById(row.groupId).then(response => {
+                    console.log(response.data);
+                    this.formIn = response.data;
+                })
+            }
         },
-        mounted() {
+        created() {
             this.getGroups();
         },
     });

@@ -35,3 +35,9 @@ function getProduct(params) {
         params: params
     });
 }
+function getProductById(id) {
+    return request({
+        url: '/product/getById?id=' + id,
+        method: 'get'
+    });
+}

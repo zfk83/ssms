@@ -6,6 +6,7 @@ import com.zfk.ssms.domain.TbProduct;
 import com.zfk.ssms.dto.ProductDTO;
 import com.zfk.ssms.service.TbProductService;
 import io.swagger.annotations.Api;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -36,9 +37,12 @@ public class TbProductController {
     }
 
     @PutMapping ("/update")
-    public Result updateProduct(@RequestBody TbProduct tbProduct) {
-        tbProductService.updateById(tbProduct);
-        return Result.success(null, "更新成功");
+    public Result updateProduct(@RequestBody ProductDTO productDTO) {
+        if(tbProductService.updateProduct(productDTO)) {
+            return Result.success(null, "更新成功");
+        }else {
+            return Result.fail(null, "更新失败");
+        }
     }
 
     @GetMapping("/get")
@@ -62,6 +66,10 @@ public class TbProductController {
             return Result.success(tbProductService.list(queryWrapper), "查询成功");
         }
         return Result.fail(null, "查询失败");
+    }
+    @GetMapping("/getById")
+    public Result getProductById(Long id) {
+        return Result.success(tbProductService.getProductById(id), null);
     }
 
     @GetMapping("/list")

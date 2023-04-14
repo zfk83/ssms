@@ -1,5 +1,6 @@
 package com.zfk.ssms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zfk.ssms.common.Result;
 import com.zfk.ssms.domain.TbGroup;
 import com.zfk.ssms.service.TbGroupService;
@@ -33,14 +34,29 @@ public class TbGroupController {
 
     @PutMapping("/update")
     public Result updateGroup(@RequestBody TbGroup tbGroup) {
-        tbGroupService.updateById(tbGroup);
-        return Result.success(null, "更新成功");
+        if (tbGroupService.updateById(tbGroup)) {
+            return Result.success(null, "更新成功");
+        } else {
+            return Result.fail(null, "更新失败");
+        }
     }
 
     @GetMapping("/get")
-    public Result getGroup(@RequestBody Long groupId) {
-        tbGroupService.getById(groupId);
-        return Result.success(tbGroupService.getById(groupId), "查询成功");
+    public Result getGroup(Long groupId) {
+        if (groupId == null) {
+            return Result.success(tbGroupService.list(), "查询成功");
+        }
+        if (groupId != null) {
+            LambdaQueryWrapper<TbGroup> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(TbGroup::getGroupId, groupId);
+            return Result.success(tbGroupService.list(queryWrapper), "查询成功");
+        }
+        return Result.fail(null, "查询失败");
+    }
+
+    @GetMapping("/getById")
+    public Result getGroupById(Long id) {
+        return Result.success(tbGroupService.getById(id), null);
     }
 
     @GetMapping("/list")

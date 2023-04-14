@@ -14,4 +14,6 @@ import java.util.List;
 public interface TbProductService extends IService<TbProduct> {
     List<ProductDTO> getProductList();
     boolean saveProduct(ProductDTO productDTO);
+    ProductDTO getProductById(Long productId);
+    boolean updateProduct(ProductDTO productDTO);
 }
