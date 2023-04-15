@@ -36,18 +36,29 @@ public class  TbProviderController {
 
     @PutMapping("/update")
     public Result updateProvider(@RequestBody TbProvider tbProvider) {
-        tbProviderService.updateById(tbProvider);
-        return Result.success(null, "更新成功");
+        if (tbProviderService.updateById(tbProvider)) {
+            return Result.success(null, "更新成功");
+        } else {
+            return Result.fail(null, "更新失败");
+        }
     }
 
     @GetMapping("/get")
     public Result getProvider(String contactPhone) {
         if (StringUtils.isEmpty(contactPhone)) {
             return Result.success(tbProviderService.list(), "查询成功");
-        } else {
-            List<TbProvider> list = tbProviderService.list(new LambdaQueryWrapper<TbProvider>().eq(TbProvider::getContactPhone, contactPhone));
-            return Result.success(list, "查询成功");
         }
+        if (!StringUtils.isEmpty(contactPhone)) {
+            LambdaQueryWrapper<TbProvider> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(TbProvider::getContactPhone, contactPhone);
+            return Result.success(tbProviderService.list(queryWrapper), "查询成功");
+        }
+        return Result.fail(null, "查询失败");
+    }
+
+    @GetMapping("/getById")
+    public Result getProviderById(Long id) {
+        return Result.success(tbProviderService.getById(id), null);
     }
 
     @GetMapping("/list")

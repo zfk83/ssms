@@ -28,9 +28,17 @@ function deleteProvider(id){
     });
 }
 
-function getProvider(contactPhone){
+function getProvider(params){
     return request({
-        url: '/provider/get?contactPhone=' + contactPhone,
+        url: '/provider/get',
+        method: 'get',
+        params: params
+    });
+}
+
+function getProviderById(id){
+    return request({
+        url: '/provider/getById?id=' + id,
         method: 'get'
     });
 }

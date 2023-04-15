@@ -30,8 +30,8 @@
             <el-table-column prop="contactPhone" label="联系电话"></el-table-column>
             <el-table-column prop="operation" label="操作" width="450px">
                 <template slot-scope="scope">
-                    <el-button type="info" style="width: 120px" icon="el-icon-document" @click="handleClick(scope.row)">供货信息</el-button>
-                    <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="providerUpdateVisible = true">修改</el-button>
+                    <el-button type="info" style="width: 120px" icon="el-icon-document">供货信息</el-button>
+                    <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
                     <el-button type="danger" style="width: 120px" icon="el-icon-delete" @click="cancelProvider(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -51,17 +51,17 @@
     </div>
 
         <el-dialog title="新增供应商" :visible.sync="providerAddVisible" >
-            <el-form :model="form">
-                <el-form-item label="供应商编号" :label-width="formLabelWidth">
+            <el-form :model="form" ref="form">
+                <el-form-item label="供应商编号" :label-width="formLabelWidth" prop="providerId">
                     <el-input v-model="form.providerId" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="供应商名称" :label-width="formLabelWidth">
+                <el-form-item label="供应商名称" :label-width="formLabelWidth" prop="providerName">
                     <el-input v-model="form.providerName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="供应商地址" :label-width="formLabelWidth">
+                <el-form-item label="供应商地址" :label-width="formLabelWidth" prop="providerAddress">
                     <el-input v-model="form.providerAddress" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="联系电话" :label-width="formLabelWidth">
+                <el-form-item label="联系电话" :label-width="formLabelWidth" prop="contactPhone">
                     <el-input v-model="form.contactPhone" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
@@ -88,7 +88,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="providerUpdateVisible = false">取 消</el-button>
-                <el-button type="primary" @click="handleProviderAdd">确 定</el-button>
+                <el-button type="primary" @click="handleProviderUpdate">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -131,7 +131,7 @@
         methods:{
 
             getProvider(){
-                getProvider(this.contactPhone).then(response => {
+                getProvider().then(response => {
                     this.providers = response.data;
                 })
             },
@@ -159,7 +159,25 @@
                     this.getProviders();
                     this.providerAddVisible = false;
                 })
+                this.$refs['form'].resetFields();
             },
+
+            handleProviderUpdate(){
+                updateProvider(this.formIn).then(response => {
+                    getProviders().then(response => {
+                    this.providers = response.data;
+                    this.providerUpdateVisible = false;
+                    })
+                })
+            },
+
+            handleUpdate(row){
+                this.providerUpdateVisible = true;
+                getProviderById(row.providerId).then(response => {
+                    console.log(response.data);
+                    this.formIn = response.data;
+                })
+            }
         },
         created() {
             this.getProviders();
