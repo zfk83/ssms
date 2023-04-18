@@ -15,7 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="tb_purchase")
 @Data
-public class TbPurchase implements Serializable {
+public class  TbPurchase implements Serializable {
     /**
      * 采购编号
      */
@@ -45,7 +45,7 @@ public class TbPurchase implements Serializable {
     /**
      * 进货价格
      */
-    private BigDecimal purchasePrice;
+    private BigDecimal goodsPrice;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

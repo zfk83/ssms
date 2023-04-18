@@ -22,9 +22,9 @@
         <el-form-item class="block">
             <span class="demonstration">时间：</span>
             <el-date-picker
-                    v-model="value2"
+                    v-model="formInline.orderTime"
                     type="datetimerange"
-                    :picker-options="pickerOptions"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                     range-separator="至"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
@@ -44,7 +44,7 @@
     </el-form>
 
     <el-table :data="orders" :border="true" class="table" >
-        <el-table-column prop="orderId" label="订单编号"></el-table-column>
+        <el-table-column prop="orderId" label="订单编号" type="index" width="80px"></el-table-column>
         <el-table-column prop="userId" label="用户编号"></el-table-column>
         <el-table-column prop="totalPrice" label="商品总价"></el-table-column>
         <el-table-column prop="orderStatus" label="订单状态"></el-table-column>

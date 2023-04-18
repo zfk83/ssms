@@ -41,3 +41,4 @@ function getProductById(id) {
         method: 'get'
     });
 }
+

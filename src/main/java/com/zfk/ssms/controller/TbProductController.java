@@ -46,14 +46,9 @@ public class TbProductController {
     }
 
     @GetMapping("/get")
-    public Result getProduct(Long productId, String productName, Long groupId) {
-        if ((productId == null)&&(StringUtils.isEmpty(productName))&&(groupId == null)) {
+    public Result getProduct(String productName, Long groupId) {
+        if ((StringUtils.isEmpty(productName))&&(groupId == null)) {
             return Result.success(tbProductService.getProductList(), "查询成功");
-        }
-        if(productId != null) {
-            LambdaQueryWrapper<TbProduct> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(TbProduct::getProductId, productId);
-            return Result.success(tbProductService.list(queryWrapper), "查询成功");
         }
         if(!StringUtils.isEmpty(productName)) {
             LambdaQueryWrapper<TbProduct> queryWrapper = new LambdaQueryWrapper<>();
@@ -65,8 +60,8 @@ public class TbProductController {
             queryWrapper.eq(TbProduct::getGroupId, groupId);
             return Result.success(tbProductService.list(queryWrapper), "查询成功");
         }
-        return Result.fail(null, "查询失败");
-    }
+        return Result.fail(null, "查询失败");    }
+
     @GetMapping("/getById")
     public Result getProductById(Long id) {
         return Result.success(tbProductService.getProductById(id), null);

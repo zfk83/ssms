@@ -2,8 +2,9 @@ package com.zfk.ssms.dto;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,6 +17,7 @@ public class ProductDTO implements Serializable {
     /**
      * 商品编号
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long productId;
 
     /**
@@ -32,7 +34,7 @@ public class ProductDTO implements Serializable {
      * 供应商名称
      */
 
-    private String provider;
+    private String providerName;
 
     /**
      * 分类编号
@@ -42,7 +44,7 @@ public class ProductDTO implements Serializable {
     /**
      * 分类名称
      */
-    private String group;
+    private String groupName;
 
     /**
      * 图片

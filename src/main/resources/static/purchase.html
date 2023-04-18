@@ -17,29 +17,27 @@
         <el-form-item label="采购编号：">
             <el-input v-model="formInline.purchaseId" placeholder="请输入采购编号"></el-input>
         </el-form-item>
-        <el-form-item label="供应商编号：">
-            <el-input v-model="formInline.providerId" placeholder="请输入供应商编号"></el-input>
+        <el-form-item label="供应商名称：">
+            <el-input v-model="formInline.providerName" placeholder="请输入供应商名称"></el-input>
         </el-form-item>
-        <el-form-item label="商品编号：">
-            <el-input v-model="formInline.productId" placeholder="请输入商品编号"></el-input>
+        <el-form-item label="商品名称：">
+            <el-input v-model="formInline.productName" placeholder="请输入商品名称"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button  type="success" icon="el-icon-search" @click="getPurchase">开始查找</el-button>
-            <el-button  type="primary" icon="el-icon-plus" @click="purchaseAddVisible = true">新增采购订单</el-button>
         </el-form-item>
     </el-form>
 
     <el-table :data="purchases" :border="true" class="table" >
-        <el-table-column prop="purchaseId" label="采购编号"></el-table-column>
-        <el-table-column prop="productId" label="商品编号"></el-table-column>
-        <el-table-column prop="providerId" label="供应商编号"></el-table-column>
-        <el-table-column prop="purchasePrice" label="进货价格"></el-table-column>
+        <el-table-column prop="purchaseId" label="采购编号" type="index" width="80px"></el-table-column>
+        <el-table-column prop="productName" label="商品名称"></el-table-column>
+        <el-table-column prop="providerName" label="供应商名称"></el-table-column>
+        <el-table-column prop="goodsPrice" label="进货价格"></el-table-column>
         <el-table-column prop="purchaseCount" label="采购数量"></el-table-column>
         <el-table-column prop="purchaseTime" label="采购时间"></el-table-column>
         <el-table-column prop="operation" label="操作" width="450px">
             <template slot-scope="scope">
-                <el-button type="info" style="width: 120px" icon="el-icon-document" @click="handleClick(scope.row)">采购信息</el-button>
-                <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="purchaseUpdateVisible = true">修改</el-button>
+                <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
                 <el-button type="danger" style="width: 120px" icon="el-icon-delete" @click="cancelPurchase(scope.row)">删除</el-button>
             </template>
         </el-table-column>
@@ -58,52 +56,22 @@
     </el-row>
 </div>
 
-    <el-dialog title="新增采购订单" :visible.sync="purchaseAddVisible" >
-        <el-form :model="form">
-            <el-form-item label="采购编号" :label-width="formLabelWidth">
-                <el-input v-model="form.purchaseId" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="商品编号" :label-width="formLabelWidth">
-                <el-input v-model="form.productId" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="供应商编号" :label-width="formLabelWidth">
-                <el-input v-model="form.providerId" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="进货价格" :label-width="formLabelWidth">
-                <el-input v-model="form.purchasePrice " autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="采购数量" :label-width="formLabelWidth">
-                <el-input v-model="form.purchaseCount" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="采购时间" :label-width="formLabelWidth">
-                <div class="block">
-                    <el-date-picker
-                            v-model="value1"
-                            type="datetime"
-                            placeholder="选择日期时间">
-                    </el-date-picker>
-                </div>
-            </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="purchaseAddVisible = false">取 消</el-button>
-            <el-button type="primary" @click="handlePurchaseAdd">确 定</el-button>
-        </div>
-    </el-dialog>
-
     <el-dialog title="修改" :visible.sync="purchaseUpdateVisible" >
         <el-form :model="formIn">
-            <el-form-item label="采购编号" :label-width="formLabelWidth">
-                <el-input v-model="formIn.purchaseId" autocomplete="off"></el-input>
+            <el-form-item label="供应商名称" :label-width="formLabelWidth" prop="providerName">
+                <el-select v-model="formIn.providerId" placeholder="全部" @change="handleChange">
+                    <el-option v-for="item in optionsProvider" :key="item.providerId" :label="item.providerName"
+                               :value="item.providerId"></el-option>
+                </el-select>
             </el-form-item>
-            <el-form-item label="商品编号" :label-width="formLabelWidth">
-                <el-input v-model="formIn.productId" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="供应商编号" :label-width="formLabelWidth">
-                <el-input v-model="formIn.providerId" autocomplete="off"></el-input>
+            <el-form-item label="商品名称" :label-width="formLabelWidth" prop="productName">
+                <el-select v-model.number="formIn.productId" placeholder="全部">
+                    <el-option v-for="item in optionsProduct" :key="item.goodsId" :label="item.goodsName"
+                               :value="item.goodsId"></el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="进货价格" :label-width="formLabelWidth">
-                <el-input v-model="formIn.purchasePrice " autocomplete="off"></el-input>
+                <el-input v-model="formIn.goodsPrice " autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="采购数量" :label-width="formLabelWidth">
                 <el-input v-model="formIn.purchaseCount" autocomplete="off"></el-input>
@@ -111,8 +79,9 @@
             <el-form-item label="采购时间" :label-width="formLabelWidth">
                 <div class="block">
                     <el-date-picker
-                            v-model="value2"
+                            v-model="formIn.purchaseTime"
                             type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
                             placeholder="选择日期时间">
                     </el-date-picker>
                 </div>
@@ -120,7 +89,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="purchaseUpdateVisible = false">取 消</el-button>
-            <el-button type="primary" @click="handlePurchaseAdd">确 定</el-button>
+            <el-button type="primary" @click="handlePurchaseUpdate">确 定</el-button>
         </div>
     </el-dialog>
     </div>
@@ -132,6 +101,10 @@
 <script src="./axios/axios.min.js"></script>
 <script src="./utils/request.js"></script>
 <script src="api/purchase.js"></script>
+<script src="api/product.js"></script>
+<script src="api/provider.js"></script>
+<script src="api/group.js"></script>
+<script src="api/goodsSource.js"></script>
 
 <script>
     new Vue({
@@ -139,13 +112,11 @@
         data(){
             return {
                 input: "",
-                value1: '',
-                value2: '', //修改
                 formInline: {
                     purchaseId: '',
-                    productId: '',
-                    providerId: '',
-                    purchasePrice: '',
+                    productName: '',
+                    providerName: '',
+                    goodsPrice: '',
                     purchaseCount: '',
                     purchaseTime: '',
 
@@ -154,25 +125,18 @@
                 purchases: [
 
                 ],
-                purchaseAddVisible: false,
                 purchaseUpdateVisible: false,
-                form: {
-                    purchaseId: '',
-                    productId: '',
-                    providerId: '',
-                    purchasePrice: '',
-                    purchaseCount: '',
-                    purchaseTime: '',
-                },
                 formIn: {
                     purchaseId: '',
-                    productId: '',
-                    providerId: '',
-                    purchasePrice: '',
+                    productName: '',
+                    providerName: '',
+                    goodsPrice: '',
                     purchaseCount: '',
                     purchaseTime: '',
                 },
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
+                optionsProduct: [],
+                optionsProvider: [],
             }
         },
         methods:{
@@ -190,6 +154,18 @@
                 })
             },
 
+            getProducts(){
+                getProducts().then(response => {
+                    this.optionsProduct = response.data;
+                })
+            },
+
+            getProviders(){
+                getProviders().then(response => {
+                    this.optionsProvider = response.data;
+                })
+            },
+
             cancelPurchase(row){
                 this.$confirm('确认删除该采购订单吗？', '提示', {
                     confirmButtonText: '确定',
@@ -204,15 +180,33 @@
                     this.$message.info('已取消删除')
                 })
             },
-            handlePurchaseAdd(){
-                addPurchase(this.form).then(response => {
-                    this.getPurchases();
-                    this.purchaseAddVisible = false;
+
+            handlePurchaseUpdate(){
+                updatePurchase(this.formIn).then(response => {
+                    getPurchases().then(response => {
+                        this.purchases = response.data;
+                        this.purchaseUpdateVisible = false;
+                    })
                 })
+            },
+
+            handleUpdate(row){
+                this.getGoodsSources(row.providerId);
+                this.purchaseUpdateVisible = true;
+                getPurchaseById(row.purchaseId).then(response => {
+                    console.log(response.data);
+                    this.formIn = response.data;
+                    this.formIn.purchaseId=parseInt(this.formIn.purchaseId);
+                })
+            },
+            handleChange(id){
+                this.getGoodsSources(id);
             },
         },
         created(){
             this.getPurchases();
+            this.getProducts();
+            this.getProviders();
         },
     });
 </script>

@@ -35,3 +35,10 @@ function getPurchase(params){
         params: params
     });
 }
+
+function getPurchaseById(id){
+    return request({
+        url: '/purchase/getById?id=' + id,
+        method: 'get'
+    });
+}

@@ -60,7 +60,7 @@
     </el-form>
 
     <el-table :data="products" :border="true" class="table" >
-        <el-table-column prop="productId" label="商品编号"></el-table-column>
+        <el-table-column prop="productId" label="商品编号" type="index" width="80px"></el-table-column>
         <el-table-column prop="productName" label="商品名称"></el-table-column>
         <el-table-column prop="groupName" label="分类名称"></el-table-column>
         <el-table-column prop="purchasePrice" label="进货价格"></el-table-column>

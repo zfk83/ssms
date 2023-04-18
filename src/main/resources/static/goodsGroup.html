@@ -17,8 +17,8 @@
             新增商品分类
         </el-button>
         <el-table :data="groups" :border="true"  class="table">
-            <el-table-column prop="groupId" label="分类编号"></el-table-column>
-            <el-table-column prop="groupName" label="分类"></el-table-column>
+            <el-table-column prop="groupId" label="分类编号" type="index" width="80px"></el-table-column>
+            <el-table-column prop="groupName" label="分类名称"></el-table-column>
             <el-table-column prop="groupPhoto" label="图片">
                 <template slot-scope="scope">
                     <img :src="scope.row.groupPhoto" width="80px" height="80px"/>
@@ -50,7 +50,7 @@
             <el-form-item label="分类编号" :label-width="formLabelWidth" prop="groupId">
                 <el-input v-model="form.groupId" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="分类" :label-width="formLabelWidth" prop="groupName">
+            <el-form-item label="分类名称" :label-width="formLabelWidth" prop="groupName">
                 <el-input v-model="form.groupName" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="图片" :label-width="formLabelWidth">

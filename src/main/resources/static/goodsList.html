@@ -14,42 +14,40 @@
         </div>
 
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-            <el-form-item label="商品编号：">
-                <el-input v-model="formInline.productId" placeholder="请输入商品编号"></el-input>
-            </el-form-item>
             <el-form-item label="商品名称：">
                 <el-input v-model="formInline.productName" placeholder="请输入商品名称"></el-input>
             </el-form-item>
             <el-form-item label="商品类别：">
                 <el-select v-model="formInline.groupId" placeholder="全部">
-                    <el-option v-for="item in options" :key="item.groupId" :label="item.groupName"
+                    <el-option v-for="item in optionsGroup" :key="item.groupId" :label="item.groupName"
                                :value="item.groupId"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item style="margin-left: 20px">
                 <el-button type="success" icon="el-icon-search" @click="getProduct">开始查找</el-button>
-                <el-button type="primary" icon="el-icon-plus" @click="productAddVisible = true">新增商品</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="productAddVisible = true">新增采购</el-button>
             </el-form-item>
         </el-form>
 
         <el-table :data="products" :border="true" class="table">
-            <el-table-column prop="productId" label="商品编号"></el-table-column>
+            <el-table-column prop="productId" label="商品编号" type="index" width="80px"></el-table-column>
             <el-table-column prop="productName" label="商品名称"></el-table-column>
-            <el-table-column prop="group" label="分类"></el-table-column>
+            <el-table-column prop="groupName" label="分类名称"></el-table-column>
             <el-table-column prop="photo" label="图片">
                 <template slot-scope="scope">
                     <img :src="scope.row.photo" width="80px" height="80px"/>
                 </template>
             </el-table-column>
-            <el-table-column prop="provider" label="供应商"></el-table-column>
+            <el-table-column prop="providerName" label="供应商名称"></el-table-column>
             <el-table-column prop="yieldTime" label="生产日期"></el-table-column>
-            <el-table-column prop="salePrice" label="价格"></el-table-column>
+            <el-table-column prop="salePrice" label="销售价格"></el-table-column>
             <el-table-column prop="saleCount" label="售出数"></el-table-column>
             <el-table-column prop="stock" label="库存数"></el-table-column>
-            <el-table-column prop="operation" label="操作" width="300px">
+            <el-table-column prop="operation" label="操作" width="450px">
                 <template slot-scope="scope">
-                    <el-button type="primary" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
-                    <el-button type="danger" icon="el-icon-delete" @click="cancelGoods(scope.row)">删除</el-button>
+                    <el-button type="success" style="width: 120px" icon="el-icon-plus" @click="addGoods(scope.row)">采购</el-button>
+                    <el-button type="primary" style="width: 120px" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
+                    <el-button type="danger" style="width: 120px" icon="el-icon-delete" @click="cancelGoods(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -66,20 +64,27 @@
         </el-row>
     </div>
 
-    <el-dialog title="新增商品" :visible.sync="productAddVisible">
+    <el-dialog title="新增采购" :visible.sync="productAddVisible">
         <el-form :model="form" ref="form">
-            <el-form-item label="商品编号" :label-width="formLabelWidth" prop="productId">
-                <el-input v-model="form.productId" autocomplete="off"></el-input>
+            <el-form-item label="供应商名称" :label-width="formLabelWidth" prop="providerName">
+                <el-select v-model="form.providerId" placeholder="全部" @change="handleChange">
+                    <el-option v-for="item in optionsProvider" :key="item.providerId" :label="item.providerName"
+                               :value="item.providerId"></el-option>
+                </el-select>
             </el-form-item>
-            <el-form-item label="商品名称" :label-width="formLabelWidth" prop="productName">
-                <el-input v-model="form.productName" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="分类" :label-width="formLabelWidth" prop="groupId">
+            <el-form-item label="分类名称" :label-width="formLabelWidth" prop="groupId">
                 <el-select v-model="form.groupId" placeholder="全部">
-                    <el-option v-for="item in options" :key="item.groupId" :label="item.groupName"
+                    <el-option v-for="item in optionsGroup" :key="item.groupId" :label="item.groupName"
                                :value="item.groupId"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="商品名称" :label-width="formLabelWidth" prop="productName">
+                <el-select v-model="form.productId" placeholder="全部">
+                    <el-option v-for="item in optionsProduct" :key="item.goodsId" :label="item.goodsName"
+                               :value="item.goodsId"></el-option>
+                </el-select>
+            </el-form-item>
+
             <el-form-item label="图片" :label-width="formLabelWidth">
                 <el-upload
                         class="upload-demo"
@@ -94,27 +99,19 @@
                     <div slot="tip" class="el-upload__tip">只能上传jpg文件，且不超过2M</div>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="供应商" :label-width="formLabelWidth" prop="provider">
-                <el-input v-model="form.provider" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="生产日期" :label-width="formLabelWidth" prop="yieldTime">
+
+            <el-form-item label="采购时间" :label-width="formLabelWidth" prop="purchaseTime">
                 <div class="block">
                     <el-date-picker
-                            v-model="form.yieldTime"
+                            v-model="form.purchaseTime"
                             type="datetime"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             placeholder="选择日期时间">
                     </el-date-picker>
                 </div>
             </el-form-item>
-            <el-form-item label="价格" :label-width="formLabelWidth" prop="salePrice">
-                <el-input v-model="form.salePrice" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="售出数" :label-width="formLabelWidth" prop="saleCount">
-                <el-input v-model="form.saleCount" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="库存数" :label-width="formLabelWidth" prop="stock">
-                <el-input v-model="form.stock" autocomplete="off"></el-input>
+            <el-form-item label="采购数量" :label-width="formLabelWidth" prop="purchaseCount">
+                <el-input v-model="form.purchaseCount" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -125,16 +122,22 @@
 
     <el-dialog title="修改" :visible.sync="productUpdateVisible">
         <el-form :model="formIn">
-            <el-form-item label="商品编号" :label-width="formLabelWidth">
-                <el-input v-model="formIn.productId" autocomplete="off"></el-input>
+            <el-form-item label="供应商名称" :label-width="formLabelWidth" prop="providerName">
+                <el-select v-model="formIn.providerId" placeholder="全部" @change="handleChange">
+                    <el-option v-for="item in optionsProvider" :key="item.providerId" :label="item.providerName"
+                               :value="item.providerId"></el-option>
+                </el-select>
             </el-form-item>
-            <el-form-item label="商品名称" :label-width="formLabelWidth">
-                <el-input v-model="formIn.productName" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="分类" :label-width="formLabelWidth">
+            <el-form-item label="分类名称" :label-width="formLabelWidth">
                 <el-select v-model="formIn.groupId" placeholder="全部">
-                    <el-option v-for="item in options" :key="item.groupId" :label="item.groupName"
+                    <el-option v-for="item in optionsGroup" :key="item.groupId" :label="item.groupName"
                                :value="item.groupId"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="商品名称" :label-width="formLabelWidth" prop="productName">
+                <el-select v-model.number="formIn.productId" placeholder="全部">
+                    <el-option v-for="item in optionsProduct" :key="item.goodsId" :label="item.goodsName"
+                               :value="item.goodsId"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="图片" :label-width="formLabelWidth">
@@ -151,9 +154,7 @@
                     <div slot="tip" class="el-upload__tip">只能上传jpg文件，且不超过2M</div>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="供应商" :label-width="formLabelWidth">
-                <el-input v-model="formIn.provider" autocomplete="off"></el-input>
-            </el-form-item>
+
             <el-form-item label="生产日期" :label-width="formLabelWidth">
                 <div class="block">
                     <el-date-picker
@@ -189,17 +190,18 @@
 <script src="./utils/request.js"></script>
 <script src="api/product.js"></script>
 <script src="api/group.js"></script>
+<script src="api/provider.js"></script>
+<script src="api/purchase.js"></script>
+<script src="api/goodsSource.js"></script>
 
 <script>
     new Vue({
         el: '#app',
         data() {
             return {
-                input: "",
                 fileList: [
                 ],
                 formInline: {
-                    productId: '',
                     productName: '',
                     groupId: '',
                 },
@@ -209,33 +211,31 @@
                 form: {
                     productId: '',
                     productName: '',
-                    group: '',
+                    groupName: '',
                     photo: '',
-                    provider: '',
-                    yieldTime: '',
-                    salePrice: '',
-                    saleCount: '',
-                    stock: '',
+                    providerName: '',
+                    purchaseTime: '',
+                    purchaseCount: '',
                 },
                 formIn: {
                     productId: '',
                     productName: '',
-                    group: '',
+                    groupName: '',
                     photo: '',
-                    provider: '',
+                    providerName: '',
                     yieldTime: '',
                     salePrice: '',
                     saleCount: '',
                     stock: '',
                 },
                 formLabelWidth: '120px',
-                options: [],
+                optionsProduct: [],
+                optionsGroup: [],
+                optionsProvider: [],
             };
         },
 
         methods: {
-
-
             handlePreview(file) {
                 console.log(file);
             },
@@ -269,12 +269,40 @@
                     this.products = response.data;
                 })
             },
-            getGroups() {
-                getGroups().then(response => {
-                    this.options = response.data;
+
+            getGoodsSources(id) {
+                getGoodsSources(id).then(response => {
+                    this.optionsProduct = response.data;
                 })
             },
 
+            getGroups() {
+                getGroups().then(response => {
+                    this.optionsGroup = response.data;
+                })
+            },
+            getProviders(){
+                getProviders().then(response => {
+                    this.optionsProvider = response.data;
+                })
+            },
+
+            //点击添加按钮采购商品
+            addGoods(row) {
+                this.$confirm('确认采购该商品吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    addProduct(row.productId).then(response => {
+                        this.getProducts();
+                    })
+                }).catch(() => {
+                    // 取消采购操作
+                    this.$message.info('已取消采购')
+                })
+
+            },
             //点击删除按钮删除商品
             cancelGoods(row) {
                 this.$confirm('确认删除该商品吗？', '提示', {
@@ -306,16 +334,22 @@
                 })
             },
             handleUpdate(row){
+                this.getGoodsSources(row.providerId)
                 this.productUpdateVisible = true;
                 getProductById(row.productId).then(response => {
                     console.log(response.data);
                     this.formIn = response.data;
+                    this.formIn.productId=parseInt(this.formIn.productId);
                 });
+            },
+            handleChange(id){
+                this.getGoodsSources(id);
             }
         },
         created() {
             this.getProducts();
             this.getGroups();
+            this.getProviders();
         },
 
     });

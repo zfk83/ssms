@@ -38,8 +38,8 @@
         </el-form-item>
     </el-form>
 
-    <el-table :data="orders" :border="true" class="table">
-        <el-table-column prop="orderId" label="订单编号"></el-table-column>
+    <el-table :data="orders" :border="true" class="table" >
+        <el-table-column prop="orderId" label="订单编号" type="index" width="80px"></el-table-column>
         <el-table-column prop="userId" label="用户编号"></el-table-column>
         <el-table-column prop="totalPrice" label="商品总价"></el-table-column>
         <el-table-column prop="orderStatus" label="订单状态"></el-table-column>

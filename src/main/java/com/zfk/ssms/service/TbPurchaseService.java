@@ -2,6 +2,9 @@ package com.zfk.ssms.service;
 
 import com.zfk.ssms.domain.TbPurchase;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zfk.ssms.dto.PurchaseDTO;
+
+import java.util.List;
 
 /**
 * @author ZFK
@@ -9,5 +12,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-03-13 18:07:31
 */
 public interface TbPurchaseService extends IService<TbPurchase> {
+    List<PurchaseDTO> getPurchaseList();
+    boolean savePurchase(PurchaseDTO purchaseDTO);
+    PurchaseDTO getPurchaseById(Long purchaseId);
+    boolean updatePurchase(PurchaseDTO purchaseDTO);
 
 }
