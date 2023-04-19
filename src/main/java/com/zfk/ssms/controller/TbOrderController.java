@@ -45,6 +45,41 @@ public class TbOrderController {
         }
     }
 
+    @GetMapping("/shipped")
+    public Result shippedOrder(Long id) {
+        TbOrder tbOrder = tbOrderService.getById(id);
+        tbOrder.setOrderStatus("已发货");
+        if (tbOrderService.updateById(tbOrder)) {
+            return Result.success(null, "发货成功");
+        } else {
+            return Result.fail(null, "发货失败");
+        }
+    }
+    @GetMapping("/shipped/list")
+    public Result shippedOrderList() {
+        LambdaQueryWrapper<TbOrder> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(TbOrder::getOrderStatus, "未发货");
+        return Result.success(tbOrderService.list(queryWrapper), null);
+    }
+
+    @GetMapping("/returnGoods")
+    public Result returnOrder(Long id) {
+        TbOrder tbOrder = tbOrderService.getById(id);
+        tbOrder.setOrderStatus("已退货");
+        if (tbOrderService.updateById(tbOrder)) {
+            return Result.success(null, "退货成功");
+        } else {
+            return Result.fail(null, "退货失败");
+        }
+    }
+
+    @GetMapping("/returnGoods/list")
+    public Result returnOrderList() {
+        LambdaQueryWrapper<TbOrder> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(TbOrder::getOrderStatus, "已发货");
+        return Result.success(tbOrderService.list(queryWrapper), "查询成功");
+    }
+
     @PostMapping("/get")
     public Result getOrder(@RequestBody Map<String, Object> map) {
         Long orderId = StringUtils.isEmpty(map.get("orderId")) ? null : Long.valueOf((String) map.get("orderId"));
