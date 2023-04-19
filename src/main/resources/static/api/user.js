@@ -28,9 +28,17 @@ function deleteUser(id){
     })
 }
 
-function getUser(id){
+function getUser(params){
     return request({
-        url: '/user/get/' + id,
+        url: '/user/get/',
+        method: 'get',
+        params: params
+    })
+}
+
+function getUserById(id){
+    return request({
+        url: '/user/getById?id=' + id,
         method: 'get'
     })
 }

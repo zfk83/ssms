@@ -7,7 +7,12 @@ import com.zfk.ssms.service.TbOrderService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author ZFK
@@ -33,26 +38,48 @@ public class TbOrderController {
 
     @PutMapping("/update")
     public Result updateOrder(@RequestBody TbOrder tbOrder) {
-        tbOrderService.updateById(tbOrder);
-        return Result.success(null, "更新成功");
+        if (tbOrderService.updateById(tbOrder)) {
+            return Result.success(null, "更新成功");
+        } else {
+            return Result.fail(null, "更新失败");
+        }
     }
 
-    @GetMapping("/get")
-    public Result getOrder(Long orderId, Long userId) {
-        if ((orderId == null)&&(userId == null)) {
+    @PostMapping("/get")
+    public Result getOrder(@RequestBody Map<String, Object> map) {
+        Long orderId = StringUtils.isEmpty(map.get("orderId")) ? null : Long.valueOf((String) map.get("orderId"));
+        Long userId = StringUtils.isEmpty(map.get("userId")) ? null : Long.valueOf((String) map.get("userId"));
+        String orderStatus = (String) map.get("orderStatus");
+        List<Date> orderTime = (List<Date>) map.get("orderTime");
+        if ((orderId == null) && (userId == null) && (StringUtils.isEmpty(orderStatus))&& (orderTime == null)) {
             return Result.success(tbOrderService.list(), "查询成功");
         }
-        if(orderId != null) {
+        if (orderId != null) {
             LambdaQueryWrapper<TbOrder> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TbOrder::getOrderId, orderId);
             return Result.success(tbOrderService.list(queryWrapper), "查询成功");
         }
-        if(userId != null) {
+        if (userId != null) {
             LambdaQueryWrapper<TbOrder> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TbOrder::getUserId, userId);
             return Result.success(tbOrderService.list(queryWrapper), "查询成功");
         }
+        if (!StringUtils.isEmpty(orderStatus)) {
+            LambdaQueryWrapper<TbOrder> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(TbOrder::getOrderStatus, orderStatus);
+            return Result.success(tbOrderService.list(queryWrapper), "查询成功");
+        }
+        if (orderTime != null) {
+            LambdaQueryWrapper<TbOrder> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.between(TbOrder::getOrderTime, orderTime.get(0), orderTime.get(1));
+            return Result.success(tbOrderService.list(queryWrapper), "查询成功");
+        }
         return Result.fail(null, "查询失败");
+    }
+
+    @GetMapping("/getById")
+    public Result getOrderById(Long id) {
+        return Result.success(tbOrderService.getById(id), null);
     }
 
     @GetMapping("/list")

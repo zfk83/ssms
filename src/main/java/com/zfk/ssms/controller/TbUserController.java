@@ -7,6 +7,7 @@ import com.zfk.ssms.service.TbUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -34,14 +35,29 @@ public class TbUserController {
 
     @PutMapping("/update")
     public Result updateUser(@RequestBody TbUser tbUser) {
-        tbUserService.updateById(tbUser);
-        return Result.success(null, "更新成功");
+        if (tbUserService.updateById(tbUser)) {
+            return Result.success(null, "更新成功");
+        } else {
+            return Result.fail(null, "更新失败");
+        }
     }
 
     @GetMapping("/get")
-    public Result getUser(@RequestBody Long userId) {
-        tbUserService.getById(userId);
-        return Result.success(tbUserService.getById(userId), "查询成功");
+    public Result getUser(String userName) {
+        if (StringUtils.isEmpty(userName)) {
+            return Result.success(tbUserService.list(), "查询成功");
+        }
+        if (!StringUtils.isEmpty(userName)) {
+            LambdaQueryWrapper<TbUser> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(TbUser::getUserName, userName);
+            return Result.success(tbUserService.list(queryWrapper), "查询成功");
+        }
+        return Result.fail(null, "查询失败");
+    }
+
+    @GetMapping("/getById")
+    public Result getUserById(Long id) {
+        return Result.success(tbUserService.getById(id), null);
     }
 
     @GetMapping("/list")

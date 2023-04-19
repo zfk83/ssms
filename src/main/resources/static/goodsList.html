@@ -128,14 +128,14 @@
                                :value="item.providerId"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="分类名称" :label-width="formLabelWidth">
+            <el-form-item label="分类名称" :label-width="formLabelWidth" prop="groupId">
                 <el-select v-model="formIn.groupId" placeholder="全部">
                     <el-option v-for="item in optionsGroup" :key="item.groupId" :label="item.groupName"
                                :value="item.groupId"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="商品名称" :label-width="formLabelWidth" prop="productName">
-                <el-select v-model.number="formIn.productId" placeholder="全部">
+                <el-select v-model="formIn.productId" placeholder="全部">
                     <el-option v-for="item in optionsProduct" :key="item.goodsId" :label="item.goodsName"
                                :value="item.goodsId"></el-option>
                 </el-select>

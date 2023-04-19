@@ -28,10 +28,17 @@ function deleteOrder(id) {
     });
 }
 
-function getOrder(params) {
+function getOrder(data) {
     return request({
         url: '/order/get',
-        method: 'get',
-        params: params
+        method: 'post',
+        data: data
+    });
+}
+
+function getOrderById(id) {
+    return request({
+        url: '/order/getById?id=' + id,
+        method: 'get'
     });
 }

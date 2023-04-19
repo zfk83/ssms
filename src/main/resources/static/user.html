@@ -17,7 +17,7 @@
                 <el-input v-model="formInline.userName" placeholder="请输入用户姓名"></el-input>
             </el-form-item>
             <el-form-item style="margin-left: 20px">
-                <el-button  type="success" icon="el-icon-search">开始查找</el-button>
+                <el-button  type="success" icon="el-icon-search" @click="getUser">开始查找</el-button>
                 <el-button  type="primary" icon="el-icon-plus" @click="userAddVisible = true">新增用户</el-button>
             </el-form-item>
         </el-form>
@@ -30,8 +30,8 @@
             <el-table-column prop="sex" label="性别"></el-table-column>
             <el-table-column prop="operation" label="操作" width="450px">
                 <template slot-scope="scope">
-                    <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="userUpdateVisible = true">修改信息</el-button>
-                    <el-button type="info" style="width: 120px" icon="el-icon-edit" @click="passwordUpdateVisible = true">修改密码</el-button>
+                    <el-button type="primary" style="width: 120px"  icon="el-icon-edit" @click="handleUpdate(scope.row)">修改信息</el-button>
+                    <el-button type="info" style="width: 120px" icon="el-icon-edit" @click="handlePasswordUpdate(scope.row)">修改密码</el-button>
                     <el-button type="danger" style="width: 120px" icon="el-icon-delete" @click="cancelUser(scope.row)">删除用户</el-button>
                 </template>
             </el-table-column>
@@ -50,21 +50,21 @@
         </el-row>
     </div>
         <el-dialog title="新增用户" :visible.sync="userAddVisible" >
-            <el-form :model="form">
-                <el-form-item label="用户编号" :label-width="formLabelWidth">
-                    <el-input v-model="form.userId" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="用户姓名" :label-width="formLabelWidth">
+            <el-form :model="form" ref="form">
+                <el-form-item label="用户姓名" :label-width="formLabelWidth" prop="userName">
                     <el-input v-model="form.userName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="密码" :label-width="formLabelWidth">
+                <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
                     <el-input v-model="form.password" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="联系电话" :label-width="formLabelWidth">
+                <el-form-item label="联系电话" :label-width="formLabelWidth" prop="phoneNumber">
                     <el-input v-model="form.phoneNumber" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="性别" :label-width="formLabelWidth">
-                    <el-input v-model="form.sex" autocomplete="off"></el-input>
+                <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
+                    <el-select v-model="form.sex" placeholder="全部">
+                        <el-option label="男" value="男"></el-option>
+                        <el-option label="女" value="女"></el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -75,9 +75,6 @@
 
         <el-dialog title="修改信息" :visible.sync="userUpdateVisible" >
             <el-form :model="formIn">
-                <el-form-item label="用户编号" :label-width="formLabelWidth">
-                    <el-input v-model="formIn.userId" autocomplete="off"></el-input>
-                </el-form-item>
                 <el-form-item label="用户姓名" :label-width="formLabelWidth">
                     <el-input v-model="formIn.userName" autocomplete="off"></el-input>
                 </el-form-item>
@@ -88,12 +85,15 @@
                     <el-input v-model="formIn.phoneNumber" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="性别" :label-width="formLabelWidth">
-                    <el-input v-model="formIn.sex" autocomplete="off"></el-input>
+                    <el-select v-model="formIn.sex" placeholder="全部">
+                        <el-option label="男" value="男"></el-option>
+                        <el-option label="女" value="女"></el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="userUpdateVisible = false">取 消</el-button>
-                <el-button type="primary" @click="handleUserAdd">确 定</el-button>
+                <el-button type="primary" @click="handleUserUpdate">确 定</el-button>
             </div>
         </el-dialog>
 
@@ -105,7 +105,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="passwordUpdateVisible = false">取 消</el-button>
-                <el-button type="primary" @click="handleUserAdd">确 定</el-button>
+                <el-button type="primary" @click="handlePasswordUpdate">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -123,13 +123,10 @@
         el:'#app',
         data(){
             return {
-                input: "",
                 formInline: {
                     userName: '',
                 },
-                users: [
-
-                ],
+                users: [],
                 userAddVisible: false,
                 userUpdateVisible: false,
                 passwordUpdateVisible: false,
@@ -150,10 +147,17 @@
                 formLine: {
                     password: '',
                 },
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
             }
         },
         methods:{
+
+            getUser(){
+                getUser(this.formInline).then(response => {
+                    console.log(response.data);
+                    this.users = response.data;
+                })
+            },
             getUsers(){
                 getUsers().then(response => {
                     this.users = response.data;
@@ -180,9 +184,35 @@
                     this.getUsers();
                     this.userAddVisible = false;
                 })
+                this.$refs['form'].resetFields();
             },
+
+            handleUpdate(row){
+                this.userUpdateVisible = true;
+                getUserById(row.userId).then(response => {
+                    console.log(response.data);
+                    this.formIn = response.data;
+                })
+            },
+
+            handleUserUpdate(){
+                updateUser(this.formIn).then(response => {
+                    getUsers().then(response => {
+                    this.users = response.data;
+                    this.userUpdateVisible = false;
+                    })
+                })
+            },
+
+            handlePasswordUpdate(){
+                updatePassword(this.formLine).then(response => {
+                    this.getUsers();
+                    this.passwordUpdateVisible = false;
+                })
+            },
+
         },
-        mounted(){
+        created(){
             this.getUsers();
         }
     });
